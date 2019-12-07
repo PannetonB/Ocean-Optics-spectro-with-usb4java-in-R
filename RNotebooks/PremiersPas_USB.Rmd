@@ -1,0 +1,221 @@
+---
+title: |
+    | Premiers pas USB dans R
+    | Ocean Optics USB4000 avec __*usb4java*__
+author: "Bernard Panneton"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+fig_caption: yes
+tab_caption: yes
+vignette: >
+  %\VignetteIndexEntry{A typical InSpectoR session}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+# Introduction
+La librairie __Java__ _usb4java_[^1] permet d'établir la communication avec un périphérique connecté via un port USB.
+Dans ce document, on va illustrer l'utilisation des cette librarie pour interagir avec un spectromètre d'Ocean Optics, un
+USB4000.  
+
+[^1]: http://usb4java.org/
+
+# Création des objets 
+Il faut d'abord charger la librairie _rJava_, ajouter le chemin vers les librairies de _usb4java_ à l'aide du code suivant:
+```{r}
+ok = require(rJava)
+.jinit()
+
+mypath=file.path(getwd(),"../JavaLibs/usb4java-1.3.0/lib/usb4java-1.3.0.jar")
+.jaddClassPath(mypath)
+mypath=file.path(getwd(),"../JavaLibs/usb4java-1.3.0/lib/libusb4java-1.3.0-win32-x86-64.jar")
+.jaddClassPath(mypath)
+
+
+context = .jnew("org.usb4java.Context")
+dlist = .jnew("org.usb4java.DeviceList")
+libusb = .jnew("org.usb4java.LibUsb")
+desc = .jnew("org.usb4java.DeviceDescriptor")
+dhandle <- .jnew("org.usb4java.DeviceHandle")
+bufutils <- .jnew("org.usb4java.BufferUtils")
+```
+
+# Recherche du spectromètre parmi les périphériques USB  
+Il faut d'abord identifier notre spectromètre parmi tous les périphériques raccordés à l'ordinateur. Notre périphérique est identifiable par
+le code du vendeur 0x2457 et le code du produit 0x1022.
+
+```{r}
+#on initialise l'objet libusb
+res = libusb$init(context) 
+
+#on récupère la liste de tous les périphériques USB. res donne le nombre de périphériques.
+res = libusb$getDeviceList(context,dlist) 
+
+#ce sera le numéro du périphérique USB correspondant à notre USB4000
+dev_no = NULL  
+
+#On parcoure la liste des périphériques USB pour trouver celui qui a notre nom de vendeur
+#et le bon code de produit
+for (k in 0:(res-1)){
+  #Les infos nécessaires se trouvent dans le DeviceDescriptor
+  libusb$getDeviceDescriptor(dlist$get(as.integer(k)),desc)
+  p=desc$idProduct()
+  v=desc$idVendor()
+  cat("Product: Ox", sprintf("%X",p)," - Vendor: Ox")
+  cat(sprintf("%X",v))
+  if (p==0x1022 & v==0x2457){
+    cat("  - ***************Device ",k," is Ocean Optics!********")
+    dev_no=k
+  }
+  cat("\n")
+}
+#USB4000 is vendor: Ox2457 and product: Ox1022, that is device 12
+
+#On définit notre spectro
+usb4000 <- dlist$get(as.integer(dev_no))
+
+#On montre tous les champs du DeviceDescriptor
+libusb$getDeviceDescriptor(usb4000,desc)
+usb4000_DDesc <- desc
+
+cat("\nDevice Descriptor du USB4000:\n")
+cat(usb4000_DDesc$dump())
+
+```
+
+
+# Récupération du numéro de série du spectromètre
+La fonction 0x01 permet d'initialiser le spectromètre et la fonction 0x05 suivi du paramètre 0x00 permet de récupérer le numéro de
+série du spectromètre. Ces commandes de même que les adresses des _endpoint_ d'entrée et de sorties sont détaillées dans la manuel du spectromètre [^2].  
+  
+[^2]: USB4000-OEM-Data-Sheet.pdf qui se trouve dans le répertoire __Doc__ du projet __OceanOptics_with_usb4java_in_R.
+
+```{r}
+#On définit les commandes
+init_cmd <- .jarray(as.raw(1))
+queryserial_cmd <- .jarray(as.raw(c(0x05,0x00)))
+
+#On définit les Endpoints pour les entrées et sorties.
+outendp <- .jbyte(1)
+inendp <- .jbyte(0x81)
+
+#Et un timeout
+tout <- .jlong(1000L)
+
+
+
+
+
+#Start communication to USB
+libusb$errorName(libusb$open(usb4000,dhandle))
+libusb$errorName(libusb$setConfiguration(dhandle,1L))
+libusb$errorName(libusb$claimInterface(dhandle,0L))
+
+#Init
+#On définit les buffers d'entrée/sortie nécessaires
+buffer <- bufutils$allocateByteBuffer(1L)
+buffer$put(init_cmd)
+transfered <- bufutils$allocateIntBuffer()
+#On envoie la commande pour initialiser
+libusb$errorName(libusb$bulkTransfer(dhandle,outendp,buffer,transfered,tout))
+
+#Query serial
+#On définit les buffers nécessaires pour envoyer la commande
+transfered <- bufutils$allocateIntBuffer()
+buffer <- bufutils$allocateByteBuffer(2L)
+buffer$put(queryserial_cmd)
+#Send command
+libusb$errorName(libusb$bulkTransfer(dhandle,outendp,buffer,transfered,tout))
+
+#Read serial number
+#Les buffers
+buffer = bufutils$allocateByteBuffer(20L)
+#Lire les résultats
+transfered <- bufutils$allocateIntBuffer()
+libusb$errorName(libusb$bulkTransfer(dhandle,inendp,buffer,transfered,tout))
+
+#Stop communication
+libusb$errorName(libusb$releaseInterface(dhandle,0L))
+libusb$close(dhandle)
+
+buffer$rewind()
+transfered$rewind()
+N <- transfered$get() #nombre de bytes reçus
+buffer$get()   #first is 0x05
+cat("Serial number is: ")
+for (k in 2:N){
+  cat(intToUtf8(buffer$get()))
+}
+cat("\n")
+
+
+```
+  
+# Récupération des coefficients pour calculer les longueurs d'onde
+D'après le manuel[^2], les 4 coefficients permettant de calculer le vecteur de longueurs d'onde peuvent être récupérés
+à l'aide de la fonction 0x05 avec les paramètres 0x01, 0x02, 0x03 et 0x04 respectivement. On procède d'une manière similaire à ce qui a été fait pour récupérer le numéro de série:  
+
+```{r}
+#On définit les commandes
+wv_cal_0_cmd <- .jarray(as.raw(c(0x05,0x01)))
+wv_cal_1_cmd <- .jarray(as.raw(c(0x05,0x02)))
+wv_cal_2_cmd <- .jarray(as.raw(c(0x05,0x03)))
+wv_cal_3_cmd <- .jarray(as.raw(c(0x05,0x04)))
+lescmds <- list(wv_cal_0_cmd,wv_cal_1_cmd,wv_cal_2_cmd,wv_cal_3_cmd)
+
+#Start communication to USB
+libusb$errorName(libusb$open(usb4000,dhandle))
+libusb$errorName(libusb$setConfiguration(dhandle,1L))
+libusb$errorName(libusb$claimInterface(dhandle,0L))
+
+#On définit les buffers nécessaires pour envoyer la commande
+transfered <- bufutils$allocateIntBuffer()
+cmd_buffer <- bufutils$allocateByteBuffer(2L)
+coeff_buffer <- bufutils$allocateByteBuffer(20L)
+
+tout_read <- .jlong(3000L)
+lescoeffs <- numeric(4)
+
+for (k in 1:4){
+  cmd_buffer$rewind()
+  cmd_buffer$put(lescmds[[k]])
+  #Send command
+  libusb$errorName(libusb$bulkTransfer(dhandle,outendp,cmd_buffer,transfered,tout))
+  coeff_buffer$rewind()
+  transfered$rewind()
+  #Lire
+  libusb$errorName(libusb$bulkTransfer(dhandle,inendp,coeff_buffer,transfered,tout))
+  coeff_buffer$rewind()
+  transfered$rewind()
+  N <- transfered$get() #nombre de bytes reçus
+  coeff_buffer$get()   #first is 0x05
+  coeff_buffer$get()   #second is a configuration index which is the parameter of 0x05 command.
+  dum=character()
+  for (i in 2:N){
+    dum=paste0(dum,intToUtf8(coeff_buffer$get()))
+  }
+  cat("Coefficient ", (k-1), ": ", dum, "\n")
+  lescoeffs[k] <- as.numeric(dum)
+}
+
+p <- 0:3647
+wv <- lescoeffs[1] + lescoeffs[2]*p + lescoeffs[3]*p^2 + lescoeffs[4]*p^3
+range(wv)
+
+#Stop communication
+libusb$errorName(libusb$releaseInterface(dhandle,0L))
+libusb$close(dhandle)
+
+
+```
+
+  
+A la fin, on détruit la liste.  
+
+```{r}
+libusb$freeDeviceList(dlist,TRUE)
+```
+
+  
+
+[^2]: USB4000-OEM-Data-Sheet.pdf qui se trouve dans le répertoire __Doc__ du projet __OceanOptics_with_usb4java_in_R.

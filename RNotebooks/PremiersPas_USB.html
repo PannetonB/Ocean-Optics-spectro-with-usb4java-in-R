@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<meta name="author" content="Bernard Panneton" />
+
+<meta name="date" content="2019-12-06" />
+
+<title>PremiersPas_USB.utf8</title>
+
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css" data-origin="pandoc">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#header {
+text-align: center;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore"><div class="line-block">Premiers pas USB dans R<br />
+Ocean Optics USB4000 avec <strong><em>usb4java</em></strong></div></h1>
+<h4 class="author">Bernard Panneton</h4>
+<h4 class="date">2019-12-06</h4>
+
+
+
+<div id="introduction" class="section level1">
+<h1>Introduction</h1>
+<p>La librairie <strong>Java</strong> <em>usb4java</em><a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a> permet d’établir la communication avec un périphérique connecté via un port USB. Dans ce document, on va illustrer l’utilisation des cette librarie pour interagir avec un spectromètre d’Ocean Optics, un USB4000.</p>
+</div>
+<div id="création-des-objets" class="section level1">
+<h1>Création des objets</h1>
+<p>Il faut d’abord charger la librairie <em>rJava</em>, ajouter le chemin vers les librairies de <em>usb4java</em> à l’aide du code suivant:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1">ok =<span class="st"> </span><span class="kw">require</span>(rJava)</a></code></pre></div>
+<pre><code>## Loading required package: rJava</code></pre>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1"><span class="kw">.jinit</span>()</a>
+<a class="sourceLine" id="cb3-2" title="2"></a>
+<a class="sourceLine" id="cb3-3" title="3">mypath=<span class="kw">file.path</span>(<span class="kw">getwd</span>(),<span class="st">&quot;../JavaLibs/usb4java-1.3.0/lib/usb4java-1.3.0.jar&quot;</span>)</a>
+<a class="sourceLine" id="cb3-4" title="4"><span class="kw">.jaddClassPath</span>(mypath)</a>
+<a class="sourceLine" id="cb3-5" title="5">mypath=<span class="kw">file.path</span>(<span class="kw">getwd</span>(),<span class="st">&quot;../JavaLibs/usb4java-1.3.0/lib/libusb4java-1.3.0-win32-x86-64.jar&quot;</span>)</a>
+<a class="sourceLine" id="cb3-6" title="6"><span class="kw">.jaddClassPath</span>(mypath)</a>
+<a class="sourceLine" id="cb3-7" title="7"></a>
+<a class="sourceLine" id="cb3-8" title="8"></a>
+<a class="sourceLine" id="cb3-9" title="9">context =<span class="st"> </span><span class="kw">.jnew</span>(<span class="st">&quot;org.usb4java.Context&quot;</span>)</a>
+<a class="sourceLine" id="cb3-10" title="10">dlist =<span class="st"> </span><span class="kw">.jnew</span>(<span class="st">&quot;org.usb4java.DeviceList&quot;</span>)</a>
+<a class="sourceLine" id="cb3-11" title="11">libusb =<span class="st"> </span><span class="kw">.jnew</span>(<span class="st">&quot;org.usb4java.LibUsb&quot;</span>)</a>
+<a class="sourceLine" id="cb3-12" title="12">desc =<span class="st"> </span><span class="kw">.jnew</span>(<span class="st">&quot;org.usb4java.DeviceDescriptor&quot;</span>)</a>
+<a class="sourceLine" id="cb3-13" title="13">dhandle &lt;-<span class="st"> </span><span class="kw">.jnew</span>(<span class="st">&quot;org.usb4java.DeviceHandle&quot;</span>)</a>
+<a class="sourceLine" id="cb3-14" title="14">bufutils &lt;-<span class="st"> </span><span class="kw">.jnew</span>(<span class="st">&quot;org.usb4java.BufferUtils&quot;</span>)</a></code></pre></div>
+</div>
+<div id="recherche-du-spectromètre-parmi-les-périphériques-usb" class="section level1">
+<h1>Recherche du spectromètre parmi les périphériques USB</h1>
+<p>Il faut d’abord identifier notre spectromètre parmi tous les périphériques raccordés à l’ordinateur. Notre périphérique est identifiable par le code du vendeur 0x2457 et le code du produit 0x1022.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" title="1"><span class="co">#on initialise l&#39;objet libusb</span></a>
+<a class="sourceLine" id="cb4-2" title="2">res =<span class="st"> </span>libusb<span class="op">$</span><span class="kw">init</span>(context) </a>
+<a class="sourceLine" id="cb4-3" title="3"></a>
+<a class="sourceLine" id="cb4-4" title="4"><span class="co">#on récupère la liste de tous les périphériques USB. res donne le nombre de périphériques.</span></a>
+<a class="sourceLine" id="cb4-5" title="5">res =<span class="st"> </span>libusb<span class="op">$</span><span class="kw">getDeviceList</span>(context,dlist) </a>
+<a class="sourceLine" id="cb4-6" title="6"></a>
+<a class="sourceLine" id="cb4-7" title="7"><span class="co">#ce sera le numéro du périphérique USB correspondant à notre USB4000</span></a>
+<a class="sourceLine" id="cb4-8" title="8">dev_no =<span class="st"> </span><span class="ot">NULL</span>  </a>
+<a class="sourceLine" id="cb4-9" title="9"></a>
+<a class="sourceLine" id="cb4-10" title="10"><span class="co">#On parcoure la liste des périphériques USB pour trouver celui qui a notre nom de vendeur</span></a>
+<a class="sourceLine" id="cb4-11" title="11"><span class="co">#et le bon code de produit</span></a>
+<a class="sourceLine" id="cb4-12" title="12"><span class="cf">for</span> (k <span class="cf">in</span> <span class="dv">0</span><span class="op">:</span>(res<span class="dv">-1</span>)){</a>
+<a class="sourceLine" id="cb4-13" title="13">  <span class="co">#Les infos nécessaires se trouvent dans le DeviceDescriptor</span></a>
+<a class="sourceLine" id="cb4-14" title="14">  libusb<span class="op">$</span><span class="kw">getDeviceDescriptor</span>(dlist<span class="op">$</span><span class="kw">get</span>(<span class="kw">as.integer</span>(k)),desc)</a>
+<a class="sourceLine" id="cb4-15" title="15">  p=desc<span class="op">$</span><span class="kw">idProduct</span>()</a>
+<a class="sourceLine" id="cb4-16" title="16">  v=desc<span class="op">$</span><span class="kw">idVendor</span>()</a>
+<a class="sourceLine" id="cb4-17" title="17">  <span class="kw">cat</span>(<span class="st">&quot;Product: Ox&quot;</span>, <span class="kw">sprintf</span>(<span class="st">&quot;%X&quot;</span>,p),<span class="st">&quot; - Vendor: Ox&quot;</span>)</a>
+<a class="sourceLine" id="cb4-18" title="18">  <span class="kw">cat</span>(<span class="kw">sprintf</span>(<span class="st">&quot;%X&quot;</span>,v))</a>
+<a class="sourceLine" id="cb4-19" title="19">  <span class="cf">if</span> (p<span class="op">==</span><span class="dv">0x1022</span> <span class="op">&amp;</span><span class="st"> </span>v<span class="op">==</span><span class="dv">0x2457</span>){</a>
+<a class="sourceLine" id="cb4-20" title="20">    <span class="kw">cat</span>(<span class="st">&quot;  - ***************Device &quot;</span>,k,<span class="st">&quot; is Ocean Optics!********&quot;</span>)</a>
+<a class="sourceLine" id="cb4-21" title="21">    dev_no=k</a>
+<a class="sourceLine" id="cb4-22" title="22">  }</a>
+<a class="sourceLine" id="cb4-23" title="23">  <span class="kw">cat</span>(<span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>)</a>
+<a class="sourceLine" id="cb4-24" title="24">}</a></code></pre></div>
+<pre><code>## Product: Ox 6254  - Vendor: Ox58F
+## Product: Ox 1242  - Vendor: Ox1B21
+## Product: Ox FFFFA2AF  - Vendor: OxFFFF8086
+## Product: Ox 342E  - Vendor: Ox4E8
+## Product: Ox 4D51  - Vendor: Ox461
+## Product: Ox FFFFE301  - Vendor: OxCF3
+## Product: Ox 2113  - Vendor: Ox413C
+## Product: Ox 1022  - Vendor: Ox2457  - ***************Device  7  is Ocean Optics!********
+## Product: Ox 6366  - Vendor: Ox58F</code></pre>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" title="1"><span class="co">#USB4000 is vendor: Ox2457 and product: Ox1022, that is device 12</span></a>
+<a class="sourceLine" id="cb6-2" title="2"></a>
+<a class="sourceLine" id="cb6-3" title="3"><span class="co">#On définit notre spectro</span></a>
+<a class="sourceLine" id="cb6-4" title="4">usb4000 &lt;-<span class="st"> </span>dlist<span class="op">$</span><span class="kw">get</span>(<span class="kw">as.integer</span>(dev_no))</a>
+<a class="sourceLine" id="cb6-5" title="5"></a>
+<a class="sourceLine" id="cb6-6" title="6"><span class="co">#On montre tous les champs du DeviceDescriptor</span></a>
+<a class="sourceLine" id="cb6-7" title="7">libusb<span class="op">$</span><span class="kw">getDeviceDescriptor</span>(usb4000,desc)</a></code></pre></div>
+<pre><code>## [1] 0</code></pre>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" title="1">usb4000_DDesc &lt;-<span class="st"> </span>desc</a>
+<a class="sourceLine" id="cb8-2" title="2"></a>
+<a class="sourceLine" id="cb8-3" title="3"><span class="kw">cat</span>(<span class="st">&quot;</span><span class="ch">\n</span><span class="st">Device Descriptor du USB4000:</span><span class="ch">\n</span><span class="st">&quot;</span>)</a></code></pre></div>
+<pre><code>## 
+## Device Descriptor du USB4000:</code></pre>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" title="1"><span class="kw">cat</span>(usb4000_DDesc<span class="op">$</span><span class="kw">dump</span>())</a></code></pre></div>
+<pre><code>## Device Descriptor:
+##   bLength                 18
+##   bDescriptorType          1
+##   bcdUSB                2.00
+##   bDeviceClass             0 Per Interface
+##   bDeviceSubClass          0
+##   bDeviceProtocol          0
+##   bMaxPacketSize0         64
+##   idVendor            0x2457
+##   idProduct           0x1022
+##   bcdDevice             0.02
+##   iManufacturer            1
+##   iProduct                 2
+##   iSerial                  0
+##   bNumConfigurations       1</code></pre>
+</div>
+<div id="récupération-du-numéro-de-série-du-spectromètre" class="section level1">
+<h1>Récupération du numéro de série du spectromètre</h1>
+<p>La fonction 0x01 permet d’initialiser le spectromètre et la fonction 0x05 suivi du paramètre 0x00 permet de récupérer le numéro de série du spectromètre. Ces commandes de même que les adresses des <em>endpoint</em> d’entrée et de sorties sont détaillées dans la manuel du spectromètre <a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a>.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" title="1"><span class="co">#On définit les commandes</span></a>
+<a class="sourceLine" id="cb12-2" title="2">init_cmd &lt;-<span class="st"> </span><span class="kw">.jarray</span>(<span class="kw">as.raw</span>(<span class="dv">1</span>))</a>
+<a class="sourceLine" id="cb12-3" title="3">queryserial_cmd &lt;-<span class="st"> </span><span class="kw">.jarray</span>(<span class="kw">as.raw</span>(<span class="kw">c</span>(<span class="dv">0x05</span>,<span class="dv">0x00</span>)))</a>
+<a class="sourceLine" id="cb12-4" title="4"></a>
+<a class="sourceLine" id="cb12-5" title="5"><span class="co">#On définit les Endpoints pour les entrées et sorties.</span></a>
+<a class="sourceLine" id="cb12-6" title="6">outendp &lt;-<span class="st"> </span><span class="kw">.jbyte</span>(<span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb12-7" title="7">inendp &lt;-<span class="st"> </span><span class="kw">.jbyte</span>(<span class="dv">0x81</span>)</a>
+<a class="sourceLine" id="cb12-8" title="8"></a>
+<a class="sourceLine" id="cb12-9" title="9"><span class="co">#Et un timeout</span></a>
+<a class="sourceLine" id="cb12-10" title="10">tout &lt;-<span class="st"> </span><span class="kw">.jlong</span>(1000L)</a>
+<a class="sourceLine" id="cb12-11" title="11"></a>
+<a class="sourceLine" id="cb12-12" title="12"></a>
+<a class="sourceLine" id="cb12-13" title="13"></a>
+<a class="sourceLine" id="cb12-14" title="14"></a>
+<a class="sourceLine" id="cb12-15" title="15"></a>
+<a class="sourceLine" id="cb12-16" title="16"><span class="co">#Start communication to USB</span></a>
+<a class="sourceLine" id="cb12-17" title="17">libusb<span class="op">$</span><span class="kw">errorName</span>(libusb<span class="op">$</span><span class="kw">open</span>(usb4000,dhandle))</a></code></pre></div>
+<pre><code>## [1] &quot;LIBUSB_SUCCESS / LIBUSB_TRANSFER_COMPLETED&quot;</code></pre>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" title="1">libusb<span class="op">$</span><span class="kw">errorName</span>(libusb<span class="op">$</span><span class="kw">setConfiguration</span>(dhandle,1L))</a></code></pre></div>
+<pre><code>## [1] &quot;LIBUSB_SUCCESS / LIBUSB_TRANSFER_COMPLETED&quot;</code></pre>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" title="1">libusb<span class="op">$</span><span class="kw">errorName</span>(libusb<span class="op">$</span><span class="kw">claimInterface</span>(dhandle,0L))</a></code></pre></div>
+<pre><code>## [1] &quot;LIBUSB_SUCCESS / LIBUSB_TRANSFER_COMPLETED&quot;</code></pre>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" title="1"><span class="co">#Init</span></a>
+<a class="sourceLine" id="cb18-2" title="2"><span class="co">#On définit les buffers d&#39;entrée/sortie nécessaires</span></a>
+<a class="sourceLine" id="cb18-3" title="3">buffer &lt;-<span class="st"> </span>bufutils<span class="op">$</span><span class="kw">allocateByteBuffer</span>(1L)</a>
+<a class="sourceLine" id="cb18-4" title="4">buffer<span class="op">$</span><span class="kw">put</span>(init_cmd)</a></code></pre></div>
+<pre><code>## [1] &quot;Java-Object{java.nio.DirectByteBuffer[pos=1 lim=1 cap=1]}&quot;</code></pre>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" title="1">transfered &lt;-<span class="st"> </span>bufutils<span class="op">$</span><span class="kw">allocateIntBuffer</span>()</a>
+<a class="sourceLine" id="cb20-2" title="2"><span class="co">#On envoie la commande pour initialiser</span></a>
+<a class="sourceLine" id="cb20-3" title="3">libusb<span class="op">$</span><span class="kw">errorName</span>(libusb<span class="op">$</span><span class="kw">bulkTransfer</span>(dhandle,outendp,buffer,transfered,tout))</a></code></pre></div>
+<pre><code>## [1] &quot;LIBUSB_SUCCESS / LIBUSB_TRANSFER_COMPLETED&quot;</code></pre>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb22-1" title="1"><span class="co">#Query serial</span></a>
+<a class="sourceLine" id="cb22-2" title="2"><span class="co">#On définit les buffers nécessaires pour envoyer la commande</span></a>
+<a class="sourceLine" id="cb22-3" title="3">transfered &lt;-<span class="st"> </span>bufutils<span class="op">$</span><span class="kw">allocateIntBuffer</span>()</a>
+<a class="sourceLine" id="cb22-4" title="4">buffer &lt;-<span class="st"> </span>bufutils<span class="op">$</span><span class="kw">allocateByteBuffer</span>(2L)</a>
+<a class="sourceLine" id="cb22-5" title="5">buffer<span class="op">$</span><span class="kw">put</span>(queryserial_cmd)</a></code></pre></div>
+<pre><code>## [1] &quot;Java-Object{java.nio.DirectByteBuffer[pos=2 lim=2 cap=2]}&quot;</code></pre>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb24-1" title="1"><span class="co">#Send command</span></a>
+<a class="sourceLine" id="cb24-2" title="2">libusb<span class="op">$</span><span class="kw">errorName</span>(libusb<span class="op">$</span><span class="kw">bulkTransfer</span>(dhandle,outendp,buffer,transfered,tout))</a></code></pre></div>
+<pre><code>## [1] &quot;LIBUSB_SUCCESS / LIBUSB_TRANSFER_COMPLETED&quot;</code></pre>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb26-1" title="1"><span class="co">#Read serial number</span></a>
+<a class="sourceLine" id="cb26-2" title="2"><span class="co">#Les buffers</span></a>
+<a class="sourceLine" id="cb26-3" title="3">buffer =<span class="st"> </span>bufutils<span class="op">$</span><span class="kw">allocateByteBuffer</span>(20L)</a>
+<a class="sourceLine" id="cb26-4" title="4"><span class="co">#Lire les résultats</span></a>
+<a class="sourceLine" id="cb26-5" title="5">transfered &lt;-<span class="st"> </span>bufutils<span class="op">$</span><span class="kw">allocateIntBuffer</span>()</a>
+<a class="sourceLine" id="cb26-6" title="6">libusb<span class="op">$</span><span class="kw">errorName</span>(libusb<span class="op">$</span><span class="kw">bulkTransfer</span>(dhandle,inendp,buffer,transfered,tout))</a></code></pre></div>
+<pre><code>## [1] &quot;LIBUSB_SUCCESS / LIBUSB_TRANSFER_COMPLETED&quot;</code></pre>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb28-1" title="1"><span class="co">#Stop communication</span></a>
+<a class="sourceLine" id="cb28-2" title="2">libusb<span class="op">$</span><span class="kw">errorName</span>(libusb<span class="op">$</span><span class="kw">releaseInterface</span>(dhandle,0L))</a></code></pre></div>
+<pre><code>## [1] &quot;LIBUSB_SUCCESS / LIBUSB_TRANSFER_COMPLETED&quot;</code></pre>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb30-1" title="1">libusb<span class="op">$</span><span class="kw">close</span>(dhandle)</a>
+<a class="sourceLine" id="cb30-2" title="2"></a>
+<a class="sourceLine" id="cb30-3" title="3">buffer<span class="op">$</span><span class="kw">rewind</span>()</a></code></pre></div>
+<pre><code>## [1] &quot;Java-Object{java.nio.DirectByteBuffer[pos=0 lim=20 cap=20]}&quot;</code></pre>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb32-1" title="1">transfered<span class="op">$</span><span class="kw">rewind</span>()</a></code></pre></div>
+<pre><code>## [1] &quot;Java-Object{java.nio.DirectIntBufferS[pos=0 lim=1 cap=1]}&quot;</code></pre>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb34-1" title="1">N &lt;-<span class="st"> </span>transfered<span class="op">$</span><span class="kw">get</span>() <span class="co">#nombre de bytes reçus</span></a>
+<a class="sourceLine" id="cb34-2" title="2">buffer<span class="op">$</span><span class="kw">get</span>()   <span class="co">#first is 0x05</span></a></code></pre></div>
+<pre><code>## [1] 5</code></pre>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb36-1" title="1"><span class="kw">cat</span>(<span class="st">&quot;Serial number is: &quot;</span>)</a></code></pre></div>
+<pre><code>## Serial number is:</code></pre>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb38-1" title="1"><span class="cf">for</span> (k <span class="cf">in</span> <span class="dv">2</span><span class="op">:</span>N){</a>
+<a class="sourceLine" id="cb38-2" title="2">  <span class="kw">cat</span>(<span class="kw">intToUtf8</span>(buffer<span class="op">$</span><span class="kw">get</span>()))</a>
+<a class="sourceLine" id="cb38-3" title="3">}</a></code></pre></div>
+<pre><code>## USB4F06255</code></pre>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb40-1" title="1"><span class="kw">cat</span>(<span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>)</a></code></pre></div>
+</div>
+<div id="récupération-des-coefficients-pour-calculer-les-longueurs-donde" class="section level1">
+<h1>Récupération des coefficients pour calculer les longueurs d’onde</h1>
+<p>D’après le manuel<a href="#fn3" class="footnote-ref" id="fnref3"><sup>3</sup></a>, les 4 coefficients permettant de calculer le vecteur de longueurs d’onde peuvent être récupérés à l’aide de la fonction 0x05 avec les paramètres 0x01, 0x02, 0x03 et 0x04 respectivement. On procède d’une manière similaire à ce qui a été fait pour récupérer le numéro de série:</p>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb41-1" title="1"><span class="co">#On définit les commandes</span></a>
+<a class="sourceLine" id="cb41-2" title="2">wv_cal_<span class="dv">0</span>_cmd &lt;-<span class="st"> </span><span class="kw">.jarray</span>(<span class="kw">as.raw</span>(<span class="kw">c</span>(<span class="dv">0x05</span>,<span class="dv">0x01</span>)))</a>
+<a class="sourceLine" id="cb41-3" title="3">wv_cal_<span class="dv">1</span>_cmd &lt;-<span class="st"> </span><span class="kw">.jarray</span>(<span class="kw">as.raw</span>(<span class="kw">c</span>(<span class="dv">0x05</span>,<span class="dv">0x02</span>)))</a>
+<a class="sourceLine" id="cb41-4" title="4">wv_cal_<span class="dv">2</span>_cmd &lt;-<span class="st"> </span><span class="kw">.jarray</span>(<span class="kw">as.raw</span>(<span class="kw">c</span>(<span class="dv">0x05</span>,<span class="dv">0x03</span>)))</a>
+<a class="sourceLine" id="cb41-5" title="5">wv_cal_<span class="dv">3</span>_cmd &lt;-<span class="st"> </span><span class="kw">.jarray</span>(<span class="kw">as.raw</span>(<span class="kw">c</span>(<span class="dv">0x05</span>,<span class="dv">0x04</span>)))</a>
+<a class="sourceLine" id="cb41-6" title="6">lescmds &lt;-<span class="st"> </span><span class="kw">list</span>(wv_cal_<span class="dv">0</span>_cmd,wv_cal_<span class="dv">1</span>_cmd,wv_cal_<span class="dv">2</span>_cmd,wv_cal_<span class="dv">3</span>_cmd)</a>
+<a class="sourceLine" id="cb41-7" title="7"></a>
+<a class="sourceLine" id="cb41-8" title="8"><span class="co">#Start communication to USB</span></a>
+<a class="sourceLine" id="cb41-9" title="9">libusb<span class="op">$</span><span class="kw">errorName</span>(libusb<span class="op">$</span><span class="kw">open</span>(usb4000,dhandle))</a></code></pre></div>
+<pre><code>## [1] &quot;LIBUSB_SUCCESS / LIBUSB_TRANSFER_COMPLETED&quot;</code></pre>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb43-1" title="1">libusb<span class="op">$</span><span class="kw">errorName</span>(libusb<span class="op">$</span><span class="kw">setConfiguration</span>(dhandle,1L))</a></code></pre></div>
+<pre><code>## [1] &quot;LIBUSB_SUCCESS / LIBUSB_TRANSFER_COMPLETED&quot;</code></pre>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb45-1" title="1">libusb<span class="op">$</span><span class="kw">errorName</span>(libusb<span class="op">$</span><span class="kw">claimInterface</span>(dhandle,0L))</a></code></pre></div>
+<pre><code>## [1] &quot;LIBUSB_SUCCESS / LIBUSB_TRANSFER_COMPLETED&quot;</code></pre>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb47-1" title="1"><span class="co">#On définit les buffers nécessaires pour envoyer la commande</span></a>
+<a class="sourceLine" id="cb47-2" title="2">transfered &lt;-<span class="st"> </span>bufutils<span class="op">$</span><span class="kw">allocateIntBuffer</span>()</a>
+<a class="sourceLine" id="cb47-3" title="3">cmd_buffer &lt;-<span class="st"> </span>bufutils<span class="op">$</span><span class="kw">allocateByteBuffer</span>(2L)</a>
+<a class="sourceLine" id="cb47-4" title="4">coeff_buffer &lt;-<span class="st"> </span>bufutils<span class="op">$</span><span class="kw">allocateByteBuffer</span>(20L)</a>
+<a class="sourceLine" id="cb47-5" title="5"></a>
+<a class="sourceLine" id="cb47-6" title="6">tout_read &lt;-<span class="st"> </span><span class="kw">.jlong</span>(3000L)</a>
+<a class="sourceLine" id="cb47-7" title="7">lescoeffs &lt;-<span class="st"> </span><span class="kw">numeric</span>(<span class="dv">4</span>)</a>
+<a class="sourceLine" id="cb47-8" title="8"></a>
+<a class="sourceLine" id="cb47-9" title="9"><span class="cf">for</span> (k <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="dv">4</span>){</a>
+<a class="sourceLine" id="cb47-10" title="10">  cmd_buffer<span class="op">$</span><span class="kw">rewind</span>()</a>
+<a class="sourceLine" id="cb47-11" title="11">  cmd_buffer<span class="op">$</span><span class="kw">put</span>(lescmds[[k]])</a>
+<a class="sourceLine" id="cb47-12" title="12">  <span class="co">#Send command</span></a>
+<a class="sourceLine" id="cb47-13" title="13">  libusb<span class="op">$</span><span class="kw">errorName</span>(libusb<span class="op">$</span><span class="kw">bulkTransfer</span>(dhandle,outendp,cmd_buffer,transfered,tout))</a>
+<a class="sourceLine" id="cb47-14" title="14">  coeff_buffer<span class="op">$</span><span class="kw">rewind</span>()</a>
+<a class="sourceLine" id="cb47-15" title="15">  transfered<span class="op">$</span><span class="kw">rewind</span>()</a>
+<a class="sourceLine" id="cb47-16" title="16">  <span class="co">#Lire</span></a>
+<a class="sourceLine" id="cb47-17" title="17">  libusb<span class="op">$</span><span class="kw">errorName</span>(libusb<span class="op">$</span><span class="kw">bulkTransfer</span>(dhandle,inendp,coeff_buffer,transfered,tout))</a>
+<a class="sourceLine" id="cb47-18" title="18">  coeff_buffer<span class="op">$</span><span class="kw">rewind</span>()</a>
+<a class="sourceLine" id="cb47-19" title="19">  transfered<span class="op">$</span><span class="kw">rewind</span>()</a>
+<a class="sourceLine" id="cb47-20" title="20">  N &lt;-<span class="st"> </span>transfered<span class="op">$</span><span class="kw">get</span>() <span class="co">#nombre de bytes reçus</span></a>
+<a class="sourceLine" id="cb47-21" title="21">  coeff_buffer<span class="op">$</span><span class="kw">get</span>()   <span class="co">#first is 0x05</span></a>
+<a class="sourceLine" id="cb47-22" title="22">  coeff_buffer<span class="op">$</span><span class="kw">get</span>()   <span class="co">#second is a configuration index which is the parameter of 0x05 command.</span></a>
+<a class="sourceLine" id="cb47-23" title="23">  dum=<span class="kw">character</span>()</a>
+<a class="sourceLine" id="cb47-24" title="24">  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">2</span><span class="op">:</span>N){</a>
+<a class="sourceLine" id="cb47-25" title="25">    dum=<span class="kw">paste0</span>(dum,<span class="kw">intToUtf8</span>(coeff_buffer<span class="op">$</span><span class="kw">get</span>()))</a>
+<a class="sourceLine" id="cb47-26" title="26">  }</a>
+<a class="sourceLine" id="cb47-27" title="27">  <span class="kw">cat</span>(<span class="st">&quot;Coefficient &quot;</span>, (k<span class="dv">-1</span>), <span class="st">&quot;: &quot;</span>, dum, <span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>)</a>
+<a class="sourceLine" id="cb47-28" title="28">  lescoeffs[k] &lt;-<span class="st"> </span><span class="kw">as.numeric</span>(dum)</a>
+<a class="sourceLine" id="cb47-29" title="29">}</a></code></pre></div>
+<pre><code>## Coefficient  0 :  178.0455501 
+## Coefficient  1 :  0.217682666 
+## Coefficient  2 :  -4.58467E-06 
+## Coefficient  3 :  -3.91355E-10</code></pre>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb49-1" title="1">p &lt;-<span class="st"> </span><span class="dv">0</span><span class="op">:</span><span class="dv">3647</span></a>
+<a class="sourceLine" id="cb49-2" title="2">wv &lt;-<span class="st"> </span>lescoeffs[<span class="dv">1</span>] <span class="op">+</span><span class="st"> </span>lescoeffs[<span class="dv">2</span>]<span class="op">*</span>p <span class="op">+</span><span class="st"> </span>lescoeffs[<span class="dv">3</span>]<span class="op">*</span>p<span class="op">^</span><span class="dv">2</span> <span class="op">+</span><span class="st"> </span>lescoeffs[<span class="dv">4</span>]<span class="op">*</span>p<span class="op">^</span><span class="dv">3</span></a>
+<a class="sourceLine" id="cb49-3" title="3"><span class="kw">range</span>(wv)</a></code></pre></div>
+<pre><code>## [1] 178.0456 891.9717</code></pre>
+<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb51-1" title="1"><span class="co">#Stop communication</span></a>
+<a class="sourceLine" id="cb51-2" title="2">libusb<span class="op">$</span><span class="kw">errorName</span>(libusb<span class="op">$</span><span class="kw">releaseInterface</span>(dhandle,0L))</a></code></pre></div>
+<pre><code>## [1] &quot;LIBUSB_SUCCESS / LIBUSB_TRANSFER_COMPLETED&quot;</code></pre>
+<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb53-1" title="1">libusb<span class="op">$</span><span class="kw">close</span>(dhandle)</a></code></pre></div>
+<p>A la fin, on détruit la liste.</p>
+<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb54-1" title="1">libusb<span class="op">$</span><span class="kw">freeDeviceList</span>(dlist,<span class="ot">TRUE</span>)</a></code></pre></div>
+</div>
+<div class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p><a href="http://usb4java.org/" class="uri">http://usb4java.org/</a><a href="#fnref1" class="footnote-back">↩</a></p></li>
+<li id="fn2"><p>USB4000-OEM-Data-Sheet.pdf qui se trouve dans le répertoire <strong>Doc</strong> du projet __OceanOptics_with_usb4java_in_R.<a href="#fnref2" class="footnote-back">↩</a></p></li>
+<li id="fn3"><p>USB4000-OEM-Data-Sheet.pdf qui se trouve dans le répertoire <strong>Doc</strong> du projet __OceanOptics_with_usb4java_in_R.<a href="#fnref3" class="footnote-back">↩</a></p></li>
+</ol>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
