@@ -2,7 +2,7 @@
 # Ocean Optics USB4000 avec __*usb4java*__
   
 par Bernard Panneton
-r Sys.Date()
+Décembre 2019
 
 
 # Introduction
