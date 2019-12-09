@@ -1,17 +1,9 @@
----
-title: |
-    | Premiers pas USB dans R
-    | Ocean Optics USB4000 avec __*usb4java*__
-author: "Bernard Panneton"
-date: "`r Sys.Date()`"
-output: rmarkdown::html_vignette
-fig_caption: yes
-tab_caption: yes
-vignette: >
-  %\VignetteIndexEntry{A typical InSpectoR session}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
----
+# Premiers pas USB dans R
+# Ocean Optics USB4000 avec __*usb4java*__
+  
+par Bernard Panneton
+r Sys.Date()
+
 
 # Introduction
 La librairie __Java__ _usb4java_[^1] permet d'établir la communication avec un périphérique connecté via un port USB.
