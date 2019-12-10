@@ -181,7 +181,7 @@ get_OO_name_n_serial <- function(usbObjects, usbDevice){
  return(list(name=lenom, version=dev_version, serialno=no_serie))
 }
 # -----------------------------------
-getWavelengths <- function(usbObjects, usbDevice)
+getWavelengths <- function(usbObjects, usbDevice){
 # -----------------------------------
 # To get the wavelength vector by reading the wavelength calibration coefficients  
 # INPUTS:
@@ -194,7 +194,6 @@ getWavelengths <- function(usbObjects, usbDevice)
 # December 2019 
 # -----------------------------------  
 
-{
   dhandle <- .jnew("org.usb4java.DeviceHandle")
   
   #On définit les commandes
