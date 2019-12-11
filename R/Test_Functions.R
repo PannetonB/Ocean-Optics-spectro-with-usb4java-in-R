@@ -16,11 +16,16 @@ wv <- getWavelengths(usbObjects, usbDevice$usbDevice)
 
 statut <- queryStatus(usbObjects, usbDevice$usbDevice)
 
-setIntegrationTime(500,usbObjects,usbDevice$usbDevice)
+setIntegrationTime(200,usbObjects,usbDevice$usbDevice)
 (statut <- queryStatus(usbObjects, usbDevice$usbDevice))
 
 
 dum <- getSpectrum(pack_in_spectra=15, usbObjects, usbDevice$usbDevice)
+
+plot(wv, dum[22:3669],type="l",col="lightgreen",lwd=5)
+lines(wv, boxcar(dum[22:3669],10), col="black",lwd=1)
+legend("topleft",legend=c("Raw","Boxcar"),lty=c(1,1),col=c("green","black"),
+         inset = c(0.05,0.05))
 
 windows()
 {
@@ -28,7 +33,7 @@ windows()
   for (k in 1:20){
     setIntegrationTime(10+k*5,usbObjects,usbDevice$usbDevice)
     dum <- getSpectrum(pack_in_spectra=15, usbObjects, usbDevice$usbDevice)
-    plot(wv, dum[22:3669],type="l",col="red",lwd=2,ylim=c(0,50000))
+    plot(wv, boxcar(dum[22:3669],5),type="l",col="red",lwd=2,ylim=c(0,50000))
   }
   (proc.time()-ptm)
 }

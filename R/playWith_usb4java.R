@@ -55,6 +55,7 @@ init_usb <- function(){
   
   source(file.path(getwd(),'R/Cfunc_littleEndian_2bytes_2_integer.R'))
   
+  boxcar <<- function(x, n = 5){stats::filter(x, rep(1 / n, n), sides = 2)}
   
   return(list(context = context,
               dlist = dlist,
