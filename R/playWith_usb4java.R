@@ -448,9 +448,6 @@ getSpectrum <- function(pack_in_spectra=15, usbObjects, usbDevice){
     data_buffer_2 <- bufutils$allocateByteBuffer(11L*512L)
     end_buffer <- bufutils$allocateByteBuffer(1L)
     
-    # dum=data_buffer_1$order()
-    # data_buffer_1$order(dum$LITTLE_ENDIAN)
-    
     outendp <- .jbyte(1)
     EP6in <- .jbyte(0x86)
     EP2in <- .jbyte(0x82)
