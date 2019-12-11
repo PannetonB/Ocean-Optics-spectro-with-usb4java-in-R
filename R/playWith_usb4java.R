@@ -437,29 +437,29 @@ getSpectrum <- function(pack_in_spectra=15, usbObjects, usbDevice){
     dhandle <- .jnew("org.usb4java.DeviceHandle")
      
     #Start communication to USB
-    usbObjects$libusb$errorName(usbObjects$libusb$open(usbDevice,dhandle))
-    usbObjects$libusb$errorName(usbObjects$libusb$setConfiguration(dhandle,1L))
-    usbObjects$libusb$errorName(usbObjects$libusb$claimInterface(dhandle,0L))
+    libusb$errorName(libusb$open(usbDevice,dhandle))
+    libusb$errorName(libusb$setConfiguration(dhandle,1L))
+    libusb$errorName(libusb$claimInterface(dhandle,0L))
     
-    transfered <- usbObjects$bufutils$allocateIntBuffer()
-    cmd_buffer <- usbObjects$bufutils$allocateByteBuffer(1L)
+    transfered <- bufutils$allocateIntBuffer()
+    cmd_buffer <- bufutils$allocateByteBuffer(1L)
     cmd_buffer$put(.jarray(as.raw(0x09)))
-    data_buffer_1 <- usbObjects$bufutils$allocateByteBuffer(4L*512L)
-    data_buffer_2 <- usbObjects$bufutils$allocateByteBuffer(11L*512L)
-    end_buffer <- usbObjects$bufutils$allocateByteBuffer(1L)
+    data_buffer_1 <- bufutils$allocateByteBuffer(4L*512L)
+    data_buffer_2 <- bufutils$allocateByteBuffer(11L*512L)
+    end_buffer <- bufutils$allocateByteBuffer(1L)
     
     outendp <- .jbyte(1)
     EP6in <- .jbyte(0x86)
     EP2in <- .jbyte(0x82)
     tout <- .jlong(5000L)
     
-    usbObjects$libusb$errorName(usbObjects$libusb$bulkTransfer(dhandle,outendp,cmd_buffer,transfered,tout))
+    libusb$errorName(libusb$bulkTransfer(dhandle,outendp,cmd_buffer,transfered,tout))
     
     
    
-    usbObjects$libusb$errorName(usbObjects$libusb$bulkTransfer(dhandle,EP6in,data_buffer_1,transfered,tout))
-    usbObjects$libusb$errorName(usbObjects$libusb$bulkTransfer(dhandle,EP2in,data_buffer_2,transfered,tout))
-    usbObjects$libusb$errorName(usbObjects$libusb$bulkTransfer(dhandle,EP2in,end_buffer,transfered,tout))
+    libusb$errorName(libusb$bulkTransfer(dhandle,EP6in,data_buffer_1,transfered,tout))
+    libusb$errorName(libusb$bulkTransfer(dhandle,EP2in,data_buffer_2,transfered,tout))
+    libusb$errorName(libusb$bulkTransfer(dhandle,EP2in,end_buffer,transfered,tout))
     dum1 <- .jarray(raw(2048))
     data_buffer_1$get(dum1,0L,(4L*512L))
     dum2 <- .jarray(raw(11*512))
@@ -469,8 +469,8 @@ getSpectrum <- function(pack_in_spectra=15, usbObjects, usbDevice){
       
    
     #Stop communication
-    usbObjects$libusb$errorName(usbObjects$libusb$releaseInterface(dhandle,0L))
-    usbObjects$libusb$close(dhandle)
+    libusb$errorName(libusb$releaseInterface(dhandle,0L))
+    libusb$close(dhandle)
     sp <<- revShort_2_numeric(dum)
   })
   return(sp)
@@ -499,16 +499,16 @@ get_N_Spectrum <- function(pack_in_spectra=15, nspectra=2, usbObjects, usbDevice
     dum <- vector(mode="list",length=nspectra)
     
     #Start communication to USB
-    usbObjects$libusb$errorName(usbObjects$libusb$open(usbDevice,dhandle))
-    usbObjects$libusb$errorName(usbObjects$libusb$setConfiguration(dhandle,1L))
-    usbObjects$libusb$errorName(usbObjects$libusb$claimInterface(dhandle,0L))
+    libusb$errorName(libusb$open(usbDevice,dhandle))
+    libusb$errorName(libusb$setConfiguration(dhandle,1L))
+    libusb$errorName(libusb$claimInterface(dhandle,0L))
     
-    transfered <- usbObjects$bufutils$allocateIntBuffer()
-    cmd_buffer <- usbObjects$bufutils$allocateByteBuffer(1L)
+    transfered <- bufutils$allocateIntBuffer()
+    cmd_buffer <- bufutils$allocateByteBuffer(1L)
     cmd_buffer$put(.jarray(as.raw(0x09)))
-    data_buffer_1 <- usbObjects$bufutils$allocateByteBuffer(4L*512L)
-    data_buffer_2 <- usbObjects$bufutils$allocateByteBuffer(11L*512L)
-    end_buffer <- usbObjects$bufutils$allocateByteBuffer(1L)
+    data_buffer_1 <- bufutils$allocateByteBuffer(4L*512L)
+    data_buffer_2 <- bufutils$allocateByteBuffer(11L*512L)
+    end_buffer <- bufutils$allocateByteBuffer(1L)
     
     outendp <- .jbyte(1)
     EP6in <- .jbyte(0x86)
@@ -520,11 +520,11 @@ get_N_Spectrum <- function(pack_in_spectra=15, nspectra=2, usbObjects, usbDevice
     dum2 <- .jarray(raw(11*512))
     
     for (k in 1:nspectra){
-      usbObjects$libusb$errorName(usbObjects$libusb$bulkTransfer(dhandle,outendp,cmd_buffer,transfered,tout))
+      libusb$errorName(libusb$bulkTransfer(dhandle,outendp,cmd_buffer,transfered,tout))
     
-      usbObjects$libusb$errorName(usbObjects$libusb$bulkTransfer(dhandle,EP6in,data_buffer_1,transfered,tout))
-      usbObjects$libusb$errorName(usbObjects$libusb$bulkTransfer(dhandle,EP2in,data_buffer_2,transfered,tout))
-      usbObjects$libusb$errorName(usbObjects$libusb$bulkTransfer(dhandle,EP2in,end_buffer,transfered,tout))
+      libusb$errorName(libusb$bulkTransfer(dhandle,EP6in,data_buffer_1,transfered,tout))
+      libusb$errorName(libusb$bulkTransfer(dhandle,EP2in,data_buffer_2,transfered,tout))
+      libusb$errorName(libusb$bulkTransfer(dhandle,EP2in,end_buffer,transfered,tout))
       
       data_buffer_1$get(dum1,0L,(4L*512L))
       data_buffer_2$get(dum2,0L,(11L*512L))
@@ -537,8 +537,8 @@ get_N_Spectrum <- function(pack_in_spectra=15, nspectra=2, usbObjects, usbDevice
     }
     
     #Stop communication
-    usbObjects$libusb$errorName(usbObjects$libusb$releaseInterface(dhandle,0L))
-    usbObjects$libusb$close(dhandle)
+    libusb$errorName(libusb$releaseInterface(dhandle,0L))
+    libusb$close(dhandle)
     sp <<- lapply(dum,revShort_2_numeric)
     sp <<- colMeans(matrix(unlist(sp),nrow=nspectra,byrow=T))
   })
