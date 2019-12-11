@@ -1,7 +1,7 @@
 ---
 output:
-  html_document: default
   pdf_document: default
+  html_document: default
 ---
 # Ocean Optics USB4000 with __*usb4java*__
   
@@ -29,6 +29,7 @@ Initialize usb device:
 2. init JVM
 3. Set Java class paths
 4. Define some objects 
+5. Define a C helper function for converting littleEndian byte vector to integer
 
 RETURN: a list of 4 components:  
    
@@ -110,20 +111,7 @@ OUTPUTS:
     4. pack_count: 
     5. usb_speed: speed of USB transfer ("full" or "high")  
     
-## revShort_2_numeric <- function(x)
-Function to reverse byte order and generate numeric vector. In the input vector,
-bytes are grouped in pairs in the LSB-MSB order.
 
-INPUTS:  
-
-* x: a vector of bytes as returned by a Java byte buffer interpreted as an array 
-    using .jevalArray() 
-    
-OUTPUTS:  
-
-* a numeric vector where each value is from a pair of bytes grouped in 
-    reverse order to build a word that is converted to numeric.  
-    
 ## setIntegrationTime(temps,usbObjects, usbDevice)
 Function to set spectrometer integration time.  
 

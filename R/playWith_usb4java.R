@@ -31,6 +31,11 @@ init_usb <- function(){
     install.packages("stringr")
     library(stringr)
   }
+  ok=require(inline)
+  if (!ok){
+    install.packages("inline")
+    library(inline)
+  }
   
   #Init. Java JVM
   .jinit()
@@ -46,6 +51,10 @@ init_usb <- function(){
   dlist = .jnew("org.usb4java.DeviceList")
   libusb = .jnew("org.usb4java.LibUsb")
   bufutils <- .jnew("org.usb4java.BufferUtils")
+  
+  
+  source(file.path(getwd(),'R/Cfunc_littleEndian_2bytes_2_integer.R'))
+  
   
   return(list(context = context,
               dlist = dlist,
@@ -344,26 +353,6 @@ queryStatus <- function(usbObjects, usbDevice){
               usb_speed=usb_speed))
 }
 
-# -----------------------------------
-revShort_2_numeric <- function(x){
-# -----------------------------------
-# Function to reverse byte order and generate numeric vector
-# INPUTS:
-#     x: a vector of bytes as returned by a Java byte buffer interpreted as an array 
-#        using .jevalArray()  
-# OUTPUTS:
-#     a numeric vector where each value is from a pair of bytes grouped in 
-#     reverse order to build a word that is converted to numeric.
-# -----------------------------------
-# B. Panneton - pannetonb2gmail.com
-# December 2019 
-# -----------------------------------    
-  s <- bytes(as.integer(x))
-  s <- gsub(" ","",s)
-  s1 <- str_sub(s,-2,-1)
-  sr <- paste0("0x",s1[seq(2,length(s1),2)],s1[seq(1,length(s1),2)])
-  sr <- as.numeric(sr)
-}
 
 # -----------------------------------
 setIntegrationTime <- function(temps,usbObjects, usbDevice){
@@ -471,7 +460,7 @@ getSpectrum <- function(pack_in_spectra=15, usbObjects, usbDevice){
     #Stop communication
     libusb$errorName(libusb$releaseInterface(dhandle,0L))
     libusb$close(dhandle)
-    sp <<- revShort_2_numeric(dum)
+    sp <<- getLittleEndianIntegerFromByteArray(dum)
   })
   return(sp)
 }
@@ -539,7 +528,7 @@ get_N_Spectrum <- function(pack_in_spectra=15, nspectra=2, usbObjects, usbDevice
     #Stop communication
     libusb$errorName(libusb$releaseInterface(dhandle,0L))
     libusb$close(dhandle)
-    sp <<- lapply(dum,revShort_2_numeric)
+    sp <<- lapply(dum,getLittleEndianIntegerFromByteArray)
     sp <<- colMeans(matrix(unlist(sp),nrow=nspectra,byrow=T))
   })
   

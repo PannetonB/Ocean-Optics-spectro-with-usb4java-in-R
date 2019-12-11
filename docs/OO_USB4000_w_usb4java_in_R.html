@@ -385,6 +385,7 @@ December 2019</p>
 <li>init JVM</li>
 <li>Set Java class paths</li>
 <li>Define some objects</li>
+<li>Define a C helper function for converting littleEndian byte vector to integer</li>
 </ol>
 <p>RETURN: a list of 4 components:</p>
 <ol style="list-style-type: decimal">
@@ -474,18 +475,6 @@ December 2019</p>
 <li>pack_count:</li>
 <li>usb_speed: speed of USB transfer (“full” or “high”)</li>
 </ol></li>
-</ul>
-</div>
-<div id="revshort_2_numeric---functionx" class="section level2">
-<h2>revShort_2_numeric &lt;- function(x)</h2>
-<p>Function to reverse byte order and generate numeric vector. In the input vector, bytes are grouped in pairs in the LSB-MSB order.</p>
-<p>INPUTS:</p>
-<ul>
-<li>x: a vector of bytes as returned by a Java byte buffer interpreted as an array using .jevalArray()</li>
-</ul>
-<p>OUTPUTS:</p>
-<ul>
-<li>a numeric vector where each value is from a pair of bytes grouped in reverse order to build a word that is converted to numeric.</li>
 </ul>
 </div>
 <div id="setintegrationtimetempsusbobjects-usbdevice" class="section level2">
