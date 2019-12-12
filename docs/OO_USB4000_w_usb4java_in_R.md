@@ -125,6 +125,17 @@ OUTPUTS:
 
 * none  
 
+## boxcar(x, n = 5)
+
+INPUTS:  
+
+* x: vector to smooth
+* n: half width of averaging window. n elements on each side of middle value.  
+
+OUTPUTS:  
+
+* a smoothed vector.
+
 ## getSpectrum(pack_in_spectra=15, usbObjects, usbDevice)
 Function to retrieve a spectrum.  
 
@@ -193,6 +204,9 @@ dum <- getSpectrum(pack_in_spectra=15, usbObjects, usbDevice$usbDevice)
  
 plot(wv, dum[22:3669],type="l",col="red",lwd=2, ylim=c(0,7000))
 
+smoothed_sp <- boxcar(dum[22:3669])
+ 
+plot(wv, smoothed_sp,type="l",col="red",lwd=2, ylim=c(0,7000))
 
 sp <- get_N_Spectrum(pack_in_spectra=15, nspectra=20, usbObjects, usbDevice$usbDevice)
 

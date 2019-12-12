@@ -491,6 +491,18 @@ December 2019</p>
 <li>none</li>
 </ul>
 </div>
+<div id="boxcarx-n-5" class="section level2">
+<h2>boxcar(x, n = 5)</h2>
+<p>INPUTS:</p>
+<ul>
+<li>x: vector to smooth</li>
+<li>n: half width of averaging window. n elements on each side of middle value.</li>
+</ul>
+<p>OUTPUTS:</p>
+<ul>
+<li>a smoothed vector.</li>
+</ul>
+</div>
 <div id="getspectrumpack_in_spectra15-usbobjects-usbdevice" class="section level2">
 <h2>getSpectrum(pack_in_spectra=15, usbObjects, usbDevice)</h2>
 <p>Function to retrieve a spectrum.</p>
@@ -549,6 +561,8 @@ December 2019</p>
 <p>dum &lt;- getSpectrum(pack_in_spectra=15, usbObjects, usbDevice$usbDevice)</p>
 <p>dum &lt;- getSpectrum(pack_in_spectra=15, usbObjects, usbDevice$usbDevice)</p>
 <p>plot(wv, dum[22:3669],type=“l”,col=“red”,lwd=2, ylim=c(0,7000))</p>
+<p>smoothed_sp &lt;- boxcar(dum[22:3669])</p>
+<p>plot(wv, smoothed_sp,type=“l”,col=“red”,lwd=2, ylim=c(0,7000))</p>
 <p>sp &lt;- get_N_Spectrum(pack_in_spectra=15, nspectra=20, usbObjects, usbDevice$usbDevice)</p>
 <p>plot(wv,sp[22:3669],type=“l”,col=“red”,lwd=2, ylim=c(0,40000), main = paste0(name_serial<span class="math inline">\(name, &quot; - Serial number: &quot;, name_serial\)</span>serialno), xlab = “Wavelength [nm]”, ylab = “Intensity [A.U.]”)</p>
 <p>free_Device(usbObjects)</p>
@@ -560,8 +574,8 @@ December 2019</p>
 <div class="footnotes">
 <hr />
 <ol>
-<li id="fn1"><p><a href="http://usb4java.org/" class="uri">http://usb4java.org/</a><a href="#fnref1" class="footnote-back">↩︎</a></p></li>
-<li id="fn2"><p>USB4000-OEM-Data-Sheet.pdf stored in the <strong>Doc</strong> of the RSTudio project <strong>OceanOptics_with_usb4java_in_R</strong>.<a href="#fnref2" class="footnote-back">↩︎</a></p></li>
+<li id="fn1"><p><a href="http://usb4java.org/" class="uri">http://usb4java.org/</a><a href="#fnref1" class="footnote-back">↩</a></p></li>
+<li id="fn2"><p>USB4000-OEM-Data-Sheet.pdf stored in the <strong>Doc</strong> of the RSTudio project <strong>OceanOptics_with_usb4java_in_R</strong>.<a href="#fnref2" class="footnote-back">↩</a></p></li>
 </ol>
 </div>
 

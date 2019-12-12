@@ -38,6 +38,7 @@ windows()
   (proc.time()-ptm)
 }
 
+dev.off()
 
 plot(wv, dum[22:3669],type="l",col="red",lwd=2)
 

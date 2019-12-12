@@ -55,7 +55,6 @@ init_usb <- function(){
   
   source(file.path(getwd(),'R/Cfunc_littleEndian_2bytes_2_integer.R'))
   
-  boxcar <<- function(x, n = 5){stats::filter(x, rep(1 / n, n), sides = 2)}
   
   return(list(context = context,
               dlist = dlist,
@@ -406,6 +405,23 @@ setIntegrationTime <- function(temps,usbObjects, usbDevice){
   
 }
 
+# -----------------------------------
+boxcar <- function(x, n = 5){
+  # -----------------------------------
+  # Apply boxcar (moving average filter) to vector. 
+  # INPUTS:
+  #   x: vector to smooth
+  #   n: half width of averaging window. n elements on each side
+  #      of middle value.
+  # OUTPUTS: 
+  #     a smoothed vector.
+  # -----------------------------------
+  # B. Panneton - pannetonb2gmail.com
+  # December 2019 
+  # -----------------------------------   
+  
+  stats::filter(x, rep(1 / n, n), sides = 2)
+}
 
 # -----------------------------------
 getSpectrum <- function(pack_in_spectra=15, usbObjects, usbDevice){
