@@ -1,7 +1,7 @@
 ---
 output:
-  pdf_document: default
   html_document: default
+  pdf_document: default
 ---
 # Ocean Optics USB4000 with __*usb4java*__
   
@@ -15,7 +15,7 @@ The usb4java library[^1] is used to communicate with a USB peripheral. It used t
 spectrometer.  
 
 This library was used to build a collection of R functions stored in __*playWith_usbjava.R*__ file. The commands required to 
-communicate with the spectrometer via the USB port are detailed in the device technical manual[^2].  
+communicate with the spectrometer via the USB port are detailed in the device technical manual[^2].
 
 [^1]: http://usb4java.org/  
 [^2]: USB4000-OEM-Data-Sheet.pdf stored in the __Doc__ of the RSTudio project __OceanOptics_with_usb4java_in_R__.  
@@ -82,6 +82,18 @@ INPUTS:
 OUTPUTS:  
 
 * a vector of wavelengths  
+
+## getMaxSatLevel(usbObjects, usbDevice){
+Read the maximum saturation level from register  
+
+INPUTS:  
+
+* usbObjects: the list returned by init_usb()
+* usbDevice:  the list returned by find_usb()  
+
+OUTPUTS:  
+
+* an integer giving the maximum saturation level.
 
 ## jbyte_2_uint(x)  
 Takes a vector of Java bytes and interprets and 0:255. Required as Java bytes are signed.  
@@ -173,8 +185,6 @@ INPUTS:
 # Example  
 Connect a USB4000 to a USB port and copy the following lines to the R console.
 
-#Testing functions
-
 source("R/playWith_usb4java.R")
 
 usbObjects <- init_usb()
@@ -215,7 +225,11 @@ plot(wv,sp[22:3669],type="l",col="red",lwd=2, ylim=c(0,40000),
      xlab = "Wavelength [nm]",
      ylab = "Intensity [A.U.]")
 
-free_Device(usbObjects)
+free_Device(usbObjects)  
+
+# Toy GUI
+A little toy GUI implementing some of the functions is available in the file toGUI.R. Just source the file and
+run toyGUI with a USB4000 spectrometer plugged into a USB port.
 
 # Final words
 The code in the R project works with a USB4000.  Adaptation to other spectrometer should be fairly 

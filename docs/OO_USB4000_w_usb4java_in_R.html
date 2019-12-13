@@ -445,6 +445,19 @@ December 2019</p>
 <li>a vector of wavelengths</li>
 </ul>
 </div>
+<div id="getmaxsatlevelusbobjects-usbdevice" class="section level2">
+<h2>getMaxSatLevel(usbObjects, usbDevice){</h2>
+<p>Read the maximum saturation level from register</p>
+<p>INPUTS:</p>
+<ul>
+<li>usbObjects: the list returned by init_usb()</li>
+<li>usbDevice: the list returned by find_usb()</li>
+</ul>
+<p>OUTPUTS:</p>
+<ul>
+<li>an integer giving the maximum saturation level.</li>
+</ul>
+</div>
 <div id="jbyte_2_uintx" class="section level2">
 <h2>jbyte_2_uint(x)</h2>
 <p>Takes a vector of Java bytes and interprets and 0:255. Required as Java bytes are signed.</p>
@@ -546,7 +559,6 @@ December 2019</p>
 <div id="example" class="section level1">
 <h1>Example</h1>
 <p>Connect a USB4000 to a USB port and copy the following lines to the R console.</p>
-<p>#Testing functions</p>
 <p>source(“R/playWith_usb4java.R”)</p>
 <p>usbObjects &lt;- init_usb()</p>
 <p>product=0x1022</p>
@@ -566,6 +578,10 @@ December 2019</p>
 <p>sp &lt;- get_N_Spectrum(pack_in_spectra=15, nspectra=20, usbObjects, usbDevice$usbDevice)</p>
 <p>plot(wv,sp[22:3669],type=“l”,col=“red”,lwd=2, ylim=c(0,40000), main = paste0(name_serial<span class="math inline">\(name, &quot; - Serial number: &quot;, name_serial\)</span>serialno), xlab = “Wavelength [nm]”, ylab = “Intensity [A.U.]”)</p>
 <p>free_Device(usbObjects)</p>
+</div>
+<div id="toy-gui" class="section level1">
+<h1>Toy GUI</h1>
+<p>A little toy GUI implementing some of the functions is available in the file toGUI.R. Just source the file and run toyGUI with a USB4000 spectrometer plugged into a USB port.</p>
 </div>
 <div id="final-words" class="section level1">
 <h1>Final words</h1>
