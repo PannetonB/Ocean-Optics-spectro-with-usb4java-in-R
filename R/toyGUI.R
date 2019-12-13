@@ -4,7 +4,6 @@ toyGUI <- function(){
     install.packages("gWidgets2")
     library(gWidgets2)
   } 
- 
   #For RGtk2 interface
   options("guiToolkit"="RGtk2")
   
@@ -31,16 +30,31 @@ toyGUI <- function(){
       }
       visible(ggra) <- TRUE
       sp <- dum[22:3669]
-      if (max(sp)  < satLevel){
-        plot(wv, sp,type="l",col="blue",ylim=c(0,satLevel),
-             xlab = "Wavelength (nm)",
-             ylab = "Intensity (A.U.)")
+      if (svalue(autoscaleY)){
+        if (max(sp)  < satLevel){
+          plot(wv, sp,type="l",col="blue",
+               xlab = "Wavelength (nm)",
+               ylab = "Intensity (A.U.)")
+        }else
+        {
+          plot(wv, sp,type="l",col="red",
+               xlab = "Wavelength (nm)",
+               ylab = "Intensity (A.U.)")
+        }
       }else
       {
-        plot(wv, sp,type="l",col="red",ylim=c(0,satLevel),
-             xlab = "Wavelength (nm)",
-             ylab = "Intensity (A.U.)")
+        if (max(sp)  < satLevel){
+          plot(wv, sp,type="l",col="blue",ylim=c(0,satLevel),
+               xlab = "Wavelength (nm)",
+               ylab = "Intensity (A.U.)")
+        }else
+        {
+          plot(wv, sp,type="l",col="red",ylim=c(0,satLevel),
+               xlab = "Wavelength (nm)",
+               ylab = "Intensity (A.U.)")
+        }
       }
+      if (svalue(gridon)) grid()
     }
    enabled(Stopbtn) <- FALSE
    enabled(h$obj) <- TRUE
@@ -77,6 +91,14 @@ toyGUI <- function(){
   gseparator(container=leftgroup)
   addSpace(leftgroup,20)
   
+  PlotParamfrm <- gframe("Plot parameters", container = leftgroup,horizontal = F, spacing=20)
+  autoscaleY <- gcheckbox(text = "Autoscale Y", checked = FALSE, container =PlotParamfrm )
+  gridon  <- gcheckbox(text = "Grid on", checked = FALSE, container =PlotParamfrm)
+  
+  addSpace(leftgroup,20)
+  gseparator(container=leftgroup)
+  addSpace(leftgroup,20)
+  
   Startbtn <- gbutton("START", container = leftgroup, handler=startbtn_handler)
   enabled(Startbtn) <- F
   
@@ -95,6 +117,7 @@ toyGUI <- function(){
   
   visible(ggra) <- TRUE
   plot(1:1,1:1)
+  plot.new()
   
   source("R/playWith_usb4java.R")
   
