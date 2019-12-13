@@ -1,7 +1,7 @@
 ---
 output:
-  html_document: default
   pdf_document: default
+  html_document: default
 ---
 # Ocean Optics USB4000 with __*usb4java*__
   
@@ -229,7 +229,9 @@ free_Device(usbObjects)
 
 # Toy GUI
 A little toy GUI implementing some of the functions is available in the file toGUI.R. Just source the file and
-run toyGUI with a USB4000 spectrometer plugged into a USB port.
+run toyGUI with a USB4000 spectrometer plugged into a USB port.  
+
+![](toyGUI.png) 
 
 # Final words
 The code in the R project works with a USB4000.  Adaptation to other spectrometer should be fairly 

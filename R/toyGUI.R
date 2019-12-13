@@ -32,10 +32,14 @@ toyGUI <- function(){
       visible(ggra) <- TRUE
       sp <- dum[22:3669]
       if (max(sp)  < satLevel){
-        plot(wv, sp,type="l",col="blue",ylim=c(0,satLevel))
+        plot(wv, sp,type="l",col="blue",ylim=c(0,satLevel),
+             xlab = "Wavelength (nm)",
+             ylab = "Intensity (A.U.)")
       }else
       {
-        plot(wv, sp,type="l",col="red",ylim=c(0,satLevel))
+        plot(wv, sp,type="l",col="red",ylim=c(0,satLevel),
+             xlab = "Wavelength (nm)",
+             ylab = "Intensity (A.U.)")
       }
     }
    enabled(Stopbtn) <- FALSE
