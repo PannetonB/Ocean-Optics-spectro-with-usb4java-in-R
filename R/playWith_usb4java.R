@@ -285,6 +285,109 @@ jbyte_2_uint <- function(x){
   x
 }
 
+
+# -----------------------------------
+#Read the maximum saturation level from register
+getMaxSatLevel <- function(usbObjects, usbDevice){
+  # -----------------------------------
+  # Read the maximum saturation level from register 
+  # INPUTS:
+  #   usbObjects: the list returned by init_usb()
+  #   usbDevice:  the list returned by find_usb()
+  # OUTPUTS:
+  #   an integer giving the maximum saturation level.
+  # -----------------------------------
+  # B. Panneton - pannetonb2gmail.com
+  # December 2019 
+  # -----------------------------------    
+  with(usbObjects,{
+    dhandle <- .jnew("org.usb4java.DeviceHandle")
+    
+    #Start communication to USB
+    libusb$errorName(libusb$open(usbDevice,dhandle))
+    libusb$errorName(libusb$setConfiguration(dhandle,1L))
+    libusb$errorName(libusb$claimInterface(dhandle,0L))
+    
+    transfered <- bufutils$allocateIntBuffer()
+    cmd_buffer <- bufutils$allocateByteBuffer(2L)
+    cmd_buffer$put(.jarray(as.raw(c(0x6b,0x80))))
+    data_buffer <- bufutils$allocateByteBuffer(3L)
+    
+    outendp <- .jbyte(0x01)
+    inendp <- .jbyte(0x81)
+    tout <- .jlong(1000L)
+    
+    libusb$errorName(libusb$bulkTransfer(dhandle,outendp,cmd_buffer,transfered,tout))
+    libusb$errorName(libusb$bulkTransfer(dhandle,inendp,data_buffer,transfered,tout))
+    
+    
+    #Stop communication
+    libusb$errorName(libusb$releaseInterface(dhandle,0L))
+    libusb$close(dhandle)
+    
+    dum1 <- .jarray(raw(transfered$get(0L)))
+    data_buffer$get(dum1,0L,3L)
+    dum <- .jevalArray(dum1)
+    dum <- getLittleEndianIntegerFromByteArray(dum[-1])
+    
+    return(dum)
+    
+   
+    
+  })
+}
+  
+
+# -----------------------------------
+#set the maximum saturation level in register
+setMaxSatLevel <- function(usbObjects, usbDevice, level){
+  # -----------------------------------
+  # Read the maximum saturation level from register 
+  # INPUTS:
+  #   usbObjects: the list returned by init_usb()
+  #   usbDevice:  the list returned by find_usb()
+  #   level: max level (0xFFFF for USB4000 is the maximum value)
+  # OUTPUTS:
+  #   an integer giving the maximum saturation level.
+  # -----------------------------------
+  # B. Panneton - pannetonb2gmail.com
+  # December 2019 
+  # -----------------------------------    
+  with(usbObjects,{
+    dhandle <- .jnew("org.usb4java.DeviceHandle")
+    
+    #Start communication to USB
+    libusb$errorName(libusb$open(usbDevice,dhandle))
+    libusb$errorName(libusb$setConfiguration(dhandle,1L))
+    libusb$errorName(libusb$claimInterface(dhandle,0L))
+    
+    transfered <- bufutils$allocateIntBuffer()
+    cmd_buffer <- bufutils$allocateByteBuffer(4L)
+    msb <- level %/% 256
+    lsb <- level %% 256
+    cmd_buffer$put(.jarray(as.raw(c(0x6a,0x80,lsb,msb))))
+    data_buffer <- bufutils$allocateByteBuffer(3L)
+    
+    outendp <- .jbyte(0x01)
+    inendp <- .jbyte(0x81)
+    tout <- .jlong(1000L)
+    
+    libusb$errorName(libusb$bulkTransfer(dhandle,outendp,cmd_buffer,transfered,tout))
+    Sys.sleep(0.001)
+    
+    
+    #Stop communication
+    libusb$errorName(libusb$releaseInterface(dhandle,0L))
+    libusb$close(dhandle)
+    
+    
+  })
+  dum=getMaxSatLevel(usbObjects,usbDevice)
+  
+  return(dum)
+}
+
+
 # -----------------------------------
 #Query status
 queryStatus <- function(usbObjects, usbDevice){

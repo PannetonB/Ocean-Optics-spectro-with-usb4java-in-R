@@ -16,7 +16,10 @@ wv <- getWavelengths(usbObjects, usbDevice$usbDevice)
 
 statut <- queryStatus(usbObjects, usbDevice$usbDevice)
 
-setIntegrationTime(200,usbObjects,usbDevice$usbDevice)
+(getMaxSatLevel(usbObjects, usbDevice$usbDevice))
+(setMaxSatLevel(usbObjects,usbDevice$usbDevice,32000))
+
+setIntegrationTime(600,usbObjects,usbDevice$usbDevice)
 (statut <- queryStatus(usbObjects, usbDevice$usbDevice))
 
 
