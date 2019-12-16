@@ -8,6 +8,8 @@ product=0x1022
 vendor=0x2457
 usbDevice <- find_usb(product,vendor,usbObjects,TRUE)
 
+cmdList <- get_command_set(product)
+
 name_serial <- get_OO_name_n_serial(usbObjects, usbDevice$usbDevice)
 
 lapply(name_serial, print)

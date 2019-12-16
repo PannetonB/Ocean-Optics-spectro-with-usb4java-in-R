@@ -108,7 +108,7 @@ find_usb <- function(product,vendor,usbObjects, silent=TRUE){
       }
       if (!silent) cat("\n")
     }
-    #USB4000 is vendor: Ox2457 and product: Ox1022, that is device 12
+    #USB4000 is vendor: Ox2457 and product: Ox1022
    
     
     
@@ -120,6 +120,41 @@ find_usb <- function(product,vendor,usbObjects, silent=TRUE){
   return(list(usbDevice = usb4000, usbDescription = usb4000_DDesc))
 }
 
+
+# -----------------------------------
+get_command_set <- function(product){
+  # -----------------------------------  
+  # Given a product ID number, returns a list of commands defined in a file.
+  # 
+  # INPUTS:
+  #   product: product ID number  
+  #   
+  # OUTPUTS:
+  #   a list of commands
+  # -----------------------------------
+  # B. Panneton - pannetonb2gmail.com
+  # December 2019 
+  # -----------------------------------   
+  
+  products = c(0x1022, # USB4000
+               0x1022, # Flame S
+               0x101e  # Flame T
+  )
+  
+  def_files = c("USB4000.R")
+  
+  indi = which(products==product)[1]
+  
+  dumenv = new.env()
+  
+  source(file.path(getwd(),"Device_def", def_files[indi]), local = dumenv)
+  
+  cmd_list <- mget(ls(envir=dumenv))
+  
+  return(cmd_list)
+  
+  
+}
 
 # -----------------------------------
 get_OO_name_n_serial <- function(usbObjects, usbDevice){
