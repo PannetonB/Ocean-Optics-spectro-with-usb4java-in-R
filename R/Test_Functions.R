@@ -10,11 +10,13 @@ usbDevice <- find_usb(product,vendor,usbObjects,TRUE)
 
 cmdList <- get_command_set(product)
 
-name_serial <- get_OO_name_n_serial(usbObjects, usbDevice$usbDevice)
+usbDevice <- c(usbDevice, cmdList)
+
+name_serial <- get_OO_name_n_serial(usbObjects, usbDevice)
 
 lapply(name_serial, print)
 
-wv <- getWavelengths(usbObjects, usbDevice$usbDevice)
+wv <- getWavelengths(usbObjects, usbDevice)
 
 statut <- queryStatus(usbObjects, usbDevice$usbDevice)
 

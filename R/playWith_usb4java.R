@@ -149,11 +149,65 @@ get_command_set <- function(product){
   
   source(file.path(getwd(),"Device_def", def_files[indi]), local = dumenv)
   
-  cmd_list <- mget(ls(envir=dumenv))
+  cmd_list <- mget(ls(envir=dumenv),envir = dumenv)
   
   return(cmd_list)
-  
-  
+}
+
+
+# -----------------------------------
+do_command <- function(usbObjects, usbDevice, cmd){
+# Excute a command.
+# 
+# INPUTS:
+#   usbObjects: the list returned by init_usb()
+#   usbDevice :  the list returned by find_usb()
+#         cmd :  one member of the list of commands for usbDevice
+# -----------------------------------  
+# OUTPUTS:
+#   a list returned buffer(s) content
+# -----------------------------------
+# B. Panneton - pannetonb2gmail.com
+# December 2019 
+# -----------------------------------   
+  with(usbObjects,{  
+    dhandle <- .jnew("org.usb4java.DeviceHandle")
+    libusb$errorName(libusb$open(usbDevice,dhandle))
+    
+    cmd_buffer <-bufutils$allocateByteBuffer(cmd$cmd$length)
+    cmd_buffer$put(cmd$cmd) 
+    
+    transfered <-bufutils$allocateIntBuffer()
+    outendp <- cmd$outEndPoint
+    tout <- .jlong(1000L)
+    
+    n_outputs = 0
+    if (!is.null(cmd$inEndPoint)){
+      n_outputs <- length(cmd$inEndPoint)
+    }
+    
+     #Start communication to USB
+    libusb$errorName(libusb$setConfiguration(dhandle,1L))
+    libusb$errorName(libusb$claimInterface(dhandle,0L))
+    
+    #Send command
+    libusb$errorName(libusb$bulkTransfer(dhandle,outendp,cmd_buffer,transfered,tout))
+    
+    #Read back
+    outBuffers <<- list()
+    transBuffers <<- list()
+    if (n_outputs>0){
+      for (k in 1:n_outputs)
+        outBuffers <<- c(outBuffers,bufutils$allocateByteBuffer(cmd$inLength[[k]]))
+      transBuffers <<- c(transBuffers,bufutils$allocateIntBuffer())
+        libusb$errorName(libusb$bulkTransfer(dhandle,cmd$inEndPoint[[k]],outBuffers[[k]],transBuffers[[k]],tout))
+    }
+   
+    #Stop communication
+    libusb$errorName(libusb$releaseInterface(dhandle,0L))
+    libusb$close(dhandle)
+  })
+  return(list(outbuf=outBuffers,transbuf=transBuffers))
 }
 
 # -----------------------------------
@@ -162,7 +216,9 @@ get_OO_name_n_serial <- function(usbObjects, usbDevice){
 # Function to get device name and version, device serial number and company names.  
 # INPUTS:
 #   usbObjects: the list returned by init_usb()
-#   usbDevice:  the list returned by find_usb()
+#   usbDevice:  the list returned by 
+#               c(find_usb(product,vendor,usbObjects,TRUE), get_command_set(product))
+#
 # OUTPUTS:
 #   a list with 3 components:
 #     1. name: name of the USB device
@@ -176,56 +232,26 @@ get_OO_name_n_serial <- function(usbObjects, usbDevice){
     dhandle <- .jnew("org.usb4java.DeviceHandle")
     
     #Lire le nom de l'appareil et sa version
-    libusb$errorName(libusb$open(usbDevice,dhandle))
+    libusb$errorName(libusb$open(usbDevice$usbDevice,dhandle))
    
     lenom <<- libusb$getStringDescriptor(dhandle,.jbyte(2L))
     dev_version <<-libusb$getStringDescriptor(dhandle,.jbyte(1L))
-    
-    
-    buffer <-bufutils$allocateByteBuffer(1L)
-    init_cmd <- .jarray(as.raw(1))
-    queryserial_cmd <- .jarray(as.raw(c(0x05,0x00)))
-    
-    
-    transfered <-bufutils$allocateIntBuffer()
-    outendp <- .jbyte(1)
-    inendp <- .jbyte(0x81)
-    tout <- .jlong(1000L)
-    
-    #Start communication to USB
-    libusb$errorName(libusb$setConfiguration(dhandle,1L))
-    libusb$errorName(libusb$claimInterface(dhandle,0L))
-  
-    #Init
-    libusb$errorName(libusb$bulkTransfer(dhandle,outendp,buffer,transfered,tout))
-    #Query serial
-    transfered <- bufutils$allocateIntBuffer()
-    buffer <-bufutils$allocateByteBuffer(2L)
-    buffer$put(queryserial_cmd)
-    #Send command
-    libusb$errorName(libusb$bulkTransfer(dhandle,outendp,buffer,transfered,tout))
-    
-    #Read serial number
-    buffer = bufutils$allocateByteBuffer(20L)
-    transfered <- bufutils$allocateIntBuffer()
-    libusb$errorName(libusb$bulkTransfer(dhandle,inendp,buffer,transfered,tout))
-    
     #Stop communication
     libusb$errorName(libusb$releaseInterface(dhandle,0L))
     libusb$close(dhandle)
-  
-  
-    buffer$rewind()
-    transfered$rewind()
-    N <- transfered$get()
-    buffer$get()   #first is 0x05
-    no_serie <<- character()
-    for (k in 2:N){
-     no_serie <<- paste0(no_serie,(intToUtf8(buffer$get())))
-    }
   })
   
- return(list(name=lenom, version=dev_version, serialno=no_serie))
+  buffers <- do_command(usbObjects,usbDevice$usbDevice,usbDevice$queryserial_cmd)
+  buffer <- buffers$outbuf[[1]]
+  buffer$rewind()
+  transbuf <- buffers$transbuf[[1]]
+  N <- transbuf$get(0L)
+  buffer$get()   #first is 0x05
+  no_serie <<- character()
+  for (k in 2:N){
+    no_serie <<- paste0(no_serie,(intToUtf8(buffer$get())))
+  }
+  return(list(name=lenom, version=dev_version, serialno=no_serie))
 }
 # -----------------------------------
 getWavelengths <- function(usbObjects, usbDevice){
@@ -233,7 +259,8 @@ getWavelengths <- function(usbObjects, usbDevice){
 # To get the wavelength vector by reading the wavelength calibration coefficients  
 # INPUTS:
 #   usbObjects: the list returned by init_usb()
-#   usbDevice:  the list returned by find_usb()
+  #   usbDevice:  the list returned by 
+  #               c(find_usb(product,vendor,usbObjects,TRUE), get_command_set(product))
 # OUTPUTS:
 #   a vector of wavelengths
 # -----------------------------------
@@ -241,64 +268,29 @@ getWavelengths <- function(usbObjects, usbDevice){
 # December 2019 
 # -----------------------------------  
 
-  with(usbObjects,{
-    dhandle <- .jnew("org.usb4java.DeviceHandle")
-    
-    #On définit les commandes
-    wv_cal_0_cmd <- .jarray(as.raw(c(0x05,0x01)))
-    wv_cal_1_cmd <- .jarray(as.raw(c(0x05,0x02)))
-    wv_cal_2_cmd <- .jarray(as.raw(c(0x05,0x03)))
-    wv_cal_3_cmd <- .jarray(as.raw(c(0x05,0x04)))
-    lescmds <- list(wv_cal_0_cmd,wv_cal_1_cmd,wv_cal_2_cmd,wv_cal_3_cmd)
-    
-    #Start communication to USB
-    libusb$errorName(libusb$open(usbDevice,dhandle))
-    libusb$errorName(libusb$setConfiguration(dhandle,1L))
-    libusb$errorName(libusb$claimInterface(dhandle,0L))
-    
-    #On définit les buffers nécessaires pour envoyer la commande
-    transfered <- bufutils$allocateIntBuffer()
-    cmd_buffer <- bufutils$allocateByteBuffer(2L)
-    coeff_buffer <- bufutils$allocateByteBuffer(20L)
-    
-    tout_read <- .jlong(3000L)
-    lescoeffs <- numeric(4)
-    
-    outendp <- .jbyte(1)
-    inendp <- .jbyte(0x81)
-    tout <- .jlong(1000L)
-    
-    for (k in 1:4){
-      cmd_buffer$rewind()
-      cmd_buffer$put(lescmds[[k]])
-      #Send command
-      libusb$errorName(libusb$bulkTransfer(dhandle,outendp,cmd_buffer,transfered,tout))
-      coeff_buffer$rewind()
-      transfered$rewind()
-      #Lire
-      libusb$errorName(libusb$bulkTransfer(dhandle,inendp,coeff_buffer,transfered,tout))
-      coeff_buffer$rewind()
-      transfered$rewind()
-      N <- transfered$get() #nombre de bytes reçus
-      coeff_buffer$get()   #first is 0x05
-      coeff_buffer$get()   #second is a configuration index which is the parameter of 0x05 command.
-      dum=character()
-      for (i in 2:N){
-        dum=paste0(dum,intToUtf8(coeff_buffer$get()))
-      }
-      #cat("Coefficient ", (k-1), ": ", dum, "\n")
-      lescoeffs[k] <- as.numeric(dum)
-    }
-    
-    p <- 0:3647
-    wv <<- lescoeffs[1] + lescoeffs[2]*p + lescoeffs[3]*p^2 + lescoeffs[4]*p^3
-    
-    
-    #Stop communication
-    libusb$errorName(libusb$releaseInterface(dhandle,0L))
-    libusb$close(dhandle)
-  })
+  lescmds <- list(usbDevice$wv_cal_0_cmd,
+                  usbDevice$wv_cal_1_cmd,
+                  usbDevice$wv_cal_2_cmd,
+                  usbDevice$wv_cal_3_cmd)
   
+  lescoeffs <- numeric(4)
+  res <- lapply(lescmds, function(x) do_command(usbObjects,usbDevice$usbDevice, x))
+  
+  for (k in 1:4){
+    datbuf <- res[[k]]$outbuf[[1]]
+    transbuf <- res[[k]]$transbuf[[1]]
+    N <- transbuf$get(0L) #nombre de bytes reçus
+    datbuf$get()   #first is 0x05
+    datbuf$get()   #second is a configuration index which is the parameter of 0x05 command.
+        dum=character()
+        for (i in 2:N){
+          dum=paste0(dum,intToUtf8(datbuf$get()))
+        }
+        #cat("Coefficient ", (k-1), ": ", dum, "\n")
+        lescoeffs[k] <- as.numeric(dum)
+  }
+  p <- 0:3647
+  wv <<- lescoeffs[1] + lescoeffs[2]*p + lescoeffs[3]*p^2 + lescoeffs[4]*p^3
   return(wv)
 }
 # -----------------------------------
@@ -328,48 +320,23 @@ getMaxSatLevel <- function(usbObjects, usbDevice){
   # Read the maximum saturation level from register 
   # INPUTS:
   #   usbObjects: the list returned by init_usb()
-  #   usbDevice:  the list returned by find_usb()
+  #   usbDevice:  the list returned by 
+  #               c(find_usb(product,vendor,usbObjects,TRUE), get_command_set(product))
   # OUTPUTS:
   #   an integer giving the maximum saturation level.
   # -----------------------------------
   # B. Panneton - pannetonb2gmail.com
   # December 2019 
   # -----------------------------------    
-  with(usbObjects,{
-    dhandle <- .jnew("org.usb4java.DeviceHandle")
-    
-    #Start communication to USB
-    libusb$errorName(libusb$open(usbDevice,dhandle))
-    libusb$errorName(libusb$setConfiguration(dhandle,1L))
-    libusb$errorName(libusb$claimInterface(dhandle,0L))
-    
-    transfered <- bufutils$allocateIntBuffer()
-    cmd_buffer <- bufutils$allocateByteBuffer(2L)
-    cmd_buffer$put(.jarray(as.raw(c(0x6b,0x80))))
-    data_buffer <- bufutils$allocateByteBuffer(3L)
-    
-    outendp <- .jbyte(0x01)
-    inendp <- .jbyte(0x81)
-    tout <- .jlong(1000L)
-    
-    libusb$errorName(libusb$bulkTransfer(dhandle,outendp,cmd_buffer,transfered,tout))
-    libusb$errorName(libusb$bulkTransfer(dhandle,inendp,data_buffer,transfered,tout))
-    
-    
-    #Stop communication
-    libusb$errorName(libusb$releaseInterface(dhandle,0L))
-    libusb$close(dhandle)
-    
-    dum1 <- .jarray(raw(transfered$get(0L)))
-    data_buffer$get(dum1,0L,3L)
-    dum <- .jevalArray(dum1)
-    dum <- getLittleEndianIntegerFromByteArray(dum[-1])
-    
-    return(dum)
-    
-   
-    
-  })
+  res <- do_command(usbObjects,usbDevice$usbDevice,usbDevice$maxSatLevel_cmd)
+  transfered <- res$transbuf[[1]]
+  data_buffer <- res$outbuf[[1]]
+  dum1 <- .jarray(raw(transfered$get(0L)))
+  data_buffer$get(dum1,0L,3L)
+  dum <- .jevalArray(dum1)
+  dum <- getLittleEndianIntegerFromByteArray(dum[-1])
+  
+  return(dum)
 }
   
 
