@@ -1,7 +1,7 @@
 ---
 output:
-  pdf_document: default
   html_document: default
+  pdf_document: default
 ---
 # Ocean Optics USB4000 with __*usb4java*__
   
@@ -208,8 +208,8 @@ setIntegrationTime(100,usbObjects,usbDevice)
 
 dum <- getSpectrum(usbObjects, usbDevice)
 
-plot(wv, dum[22:3669],type="l",col="lightgreen",lwd=5)
-lines(wv, boxcar(dum[22:3669],10), col="black",lwd=1)
+plot(wv, dum,type="l",col="lightgreen",lwd=5)
+lines(wv, boxcar(dum,10), col="black",lwd=1)
 legend("topleft",legend=c("Raw","Boxcar"),lty=c(1,1),col=c("green","black"),
          inset = c(0.05,0.05))
 
@@ -219,14 +219,14 @@ windows()
   for (k in 1:20){
     setIntegrationTime(10+k*5,usbObjects,usbDevice)
     dum <- getSpectrum(usbObjects, usbDevice)
-    plot(wv, boxcar(dum[22:3669],5),type="l",col="red",lwd=2,ylim=c(0,50000))
+    plot(wv, boxcar(dum,5),type="l",col="red",lwd=2,ylim=c(0,50000))
   }
   (proc.time()-ptm)
 }
 
 dev.off()
 
-plot(wv, dum[22:3669],type="l",col="red",lwd=2)
+plot(wv, dum,type="l",col="red",lwd=2)
 
 setIntegrationTime(100,usbObjects,usbDevice)
 {
@@ -235,7 +235,7 @@ setIntegrationTime(100,usbObjects,usbDevice)
   (proc.time()-ptm)
 }
 
-plot(wv,sp[22:3669],type="l",col="red",lwd=2,
+plot(wv,sp,type="l",col="red",lwd=2,
      main = paste0(name_serial$name, " - Serial number: ", name_serial$serialno),
      xlab = "Wavelength [nm]",
      ylab = "Intensity [A.U.]")

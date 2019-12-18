@@ -566,12 +566,12 @@ December 2019</p>
 <p>(getMaxSatLevel(usbObjects, usbDevice))</p>
 <p>setIntegrationTime(100,usbObjects,usbDevice) (statut &lt;- queryStatus(usbObjects, usbDevice))</p>
 <p>dum &lt;- getSpectrum(usbObjects, usbDevice)</p>
-<p>plot(wv, dum[22:3669],type=“l”,col=“lightgreen”,lwd=5) lines(wv, boxcar(dum[22:3669],10), col=“black”,lwd=1) legend(“topleft”,legend=c(“Raw”,“Boxcar”),lty=c(1,1),col=c(“green”,“black”), inset = c(0.05,0.05))</p>
-<p>windows() { ptm=proc.time() for (k in 1:20){ setIntegrationTime(10+k*5,usbObjects,usbDevice) dum &lt;- getSpectrum(usbObjects, usbDevice) plot(wv, boxcar(dum[22:3669],5),type=“l”,col=“red”,lwd=2,ylim=c(0,50000)) } (proc.time()-ptm) }</p>
+<p>plot(wv, dum,type=“l”,col=“lightgreen”,lwd=5) lines(wv, boxcar(dum,10), col=“black”,lwd=1) legend(“topleft”,legend=c(“Raw”,“Boxcar”),lty=c(1,1),col=c(“green”,“black”), inset = c(0.05,0.05))</p>
+<p>windows() { ptm=proc.time() for (k in 1:20){ setIntegrationTime(10+k*5,usbObjects,usbDevice) dum &lt;- getSpectrum(usbObjects, usbDevice) plot(wv, boxcar(dum,5),type=“l”,col=“red”,lwd=2,ylim=c(0,50000)) } (proc.time()-ptm) }</p>
 <p>dev.off()</p>
-<p>plot(wv, dum[22:3669],type=“l”,col=“red”,lwd=2)</p>
+<p>plot(wv, dum,type=“l”,col=“red”,lwd=2)</p>
 <p>setIntegrationTime(100,usbObjects,usbDevice) { ptm=proc.time() sp &lt;- get_N_Spectrum(nspectra=20, usbObjects, usbDevice) (proc.time()-ptm) }</p>
-<p>plot(wv,sp[22:3669],type=“l”,col=“red”,lwd=2, main = paste0(name_serial<span class="math inline">\(name, &quot; - Serial number: &quot;, name_serial\)</span>serialno), xlab = “Wavelength [nm]”, ylab = “Intensity [A.U.]”)</p>
+<p>plot(wv,sp,type=“l”,col=“red”,lwd=2, main = paste0(name_serial<span class="math inline">\(name, &quot; - Serial number: &quot;, name_serial\)</span>serialno), xlab = “Wavelength [nm]”, ylab = “Intensity [A.U.]”)</p>
 <p>free_Device(usbObjects)</p>
 <p>rm(list=ls())</p>
 </div>
