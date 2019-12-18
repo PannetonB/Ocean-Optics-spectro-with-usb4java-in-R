@@ -290,7 +290,7 @@ getWavelengths <- function(usbObjects, usbDevice){
         #cat("Coefficient ", (k-1), ": ", dum, "\n")
         lescoeffs[k] <- as.numeric(dum)
   }
-  p <- 0:3647
+  p <- 0:(length(usbDevice$useable_pix_range)-1)
   wv <<- lescoeffs[1] + lescoeffs[2]*p + lescoeffs[3]*p^2 + lescoeffs[4]*p^3
   return(wv)
 }
@@ -511,7 +511,7 @@ getSpectrum <- function(usbObjects, usbDevice){
   
   sp <- getLittleEndianIntegerFromByteArray(dum)
   
-  return(sp)
+  return(sp[usbDevice$useable_pix_range])
 }
   
 
@@ -541,7 +541,7 @@ get_N_Spectrum <- function(nspectra=2, usbObjects, usbDevice){
   }
   sp <- lapply(dum,getLittleEndianIntegerFromByteArray)
   sp <- colMeans(matrix(unlist(sp),nrow=nspectra,byrow=T))
-  return(sp)
+  return(sp[usbDevice$useable_pix_range])
 }
 
 # -----------------------------------

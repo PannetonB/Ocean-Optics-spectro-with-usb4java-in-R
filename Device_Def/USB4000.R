@@ -1,3 +1,5 @@
+useable_pix_range <- c(22:3669)
+
 init_cmd <- list(cmd = .jarray(as.raw(1)),
                  outEndPoint =  .jbyte(1),
                  inEndPoint = NULL,

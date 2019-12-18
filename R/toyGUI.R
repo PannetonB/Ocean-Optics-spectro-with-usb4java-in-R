@@ -23,13 +23,12 @@ toyGUI <- function(){
       }
       nscans <- svalue(nscansld)
       if (nscans == 1){
-        dum <- getSpectrum(usbObjects,usbDevice)
+        sp <- getSpectrum(usbObjects,usbDevice)
       }else
       {
-        dum <- get_N_Spectrum(nscans,usbObjects,usbDevice)
+        sp <- get_N_Spectrum(nscans,usbObjects,usbDevice)
       }
       visible(ggra) <- TRUE
-      sp <- dum[22:3669]
       if (svalue(autoscaleY)){
         if (max(sp)  < satLevel){
           plot(wv, sp,type="l",col="blue",
