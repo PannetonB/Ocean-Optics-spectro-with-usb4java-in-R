@@ -14,19 +14,19 @@ toyGUI <- function(){
     enabled(Stopbtn) <- TRUE 
     Acquiring <<- TRUE
     oldIntTime <- svalue(intTimesld)
-    setIntegrationTime(oldIntTime,usbObjects,usbDevice$usbDevice)
+    setIntegrationTime(oldIntTime,usbObjects,usbDevice)
     
     while(Acquiring){
       if (svalue(intTimesld) != oldIntTime){
         oldIntTime <- svalue(intTimesld)
-        setIntegrationTime(oldIntTime,usbObjects,usbDevice$usbDevice)
+        setIntegrationTime(oldIntTime,usbObjects,usbDevice)
       }
       nscans <- svalue(nscansld)
       if (nscans == 1){
-        dum <- getSpectrum(15,usbObjects,usbDevice$usbDevice)
+        dum <- getSpectrum(usbObjects,usbDevice)
       }else
       {
-        dum <- get_N_Spectrum(15,nscans,usbObjects,usbDevice$usbDevice)
+        dum <- get_N_Spectrum(nscans,usbObjects,usbDevice)
       }
       visible(ggra) <- TRUE
       sp <- dum[22:3669]
@@ -128,14 +128,17 @@ toyGUI <- function(){
   product=0x1022
   vendor=0x2457
   usbDevice <<- find_usb(product,vendor,usbObjects,TRUE)
-  name_serial <- get_OO_name_n_serial(usbObjects, usbDevice$usbDevice)
+  cmdList <- get_command_set(product)
+  usbDevice <- c(usbDevice, cmdList)
+  
+  name_serial <- get_OO_name_n_serial(usbObjects, usbDevice)
   dispose(IDtext)
   insert(IDtext," ")
   lapply(name_serial, function(x) insert(IDtext,x,font.attr = list(weight="bold")))
   
   enabled(Startbtn) <- T
   
-  wv <<- getWavelengths(usbObjects, usbDevice$usbDevice)
+  wv <<- getWavelengths(usbObjects, usbDevice)
   
-  satLevel <<- getMaxSatLevel(usbObjects, usbDevice$usbDevice)
+  satLevel <<- getMaxSatLevel(usbObjects, usbDevice)
 }

@@ -420,7 +420,7 @@ December 2019</p>
 <p>INPUTS:</p>
 <ul>
 <li>usbObjects: the list returned by init_usb()</li>
-<li>usbDevice: the list returned by find_usb()</li>
+<li>usbDevice: the list returned by c(find_usb(product,vendor,usbObjects,TRUE), get_command_set(product))</li>
 </ul>
 <p>OUTPUTS:</p>
 <ul>
@@ -438,7 +438,7 @@ December 2019</p>
 <p>INPUTS:</p>
 <ul>
 <li>usbObjects: the list returned by init_usb()</li>
-<li>usbDevice: the list returned by find_usb()</li>
+<li>usbDevice: the list returned by c(find_usb(product,vendor,usbObjects,TRUE), get_command_set(product))</li>
 </ul>
 <p>OUTPUTS:</p>
 <ul>
@@ -451,7 +451,7 @@ December 2019</p>
 <p>INPUTS:</p>
 <ul>
 <li>usbObjects: the list returned by init_usb()</li>
-<li>usbDevice: the list returned by find_usb()</li>
+<li>usbDevice: the list returned by c(find_usb(product,vendor,usbObjects,TRUE), get_command_set(product))</li>
 </ul>
 <p>OUTPUTS:</p>
 <ul>
@@ -476,7 +476,7 @@ December 2019</p>
 <p>INPUTS:</p>
 <ul>
 <li>usbObjects: the list returned by init_usb()</li>
-<li>usbDevice: the list returned by find_usb()</li>
+<li>usbDevice: the list returned by c(find_usb(product,vendor,usbObjects,TRUE), get_command_set(product))</li>
 </ul>
 <p>OUTPUTS:</p>
 <ul>
@@ -497,7 +497,7 @@ December 2019</p>
 <ul>
 <li>temps: integration time in msec.</li>
 <li>usbObjects: the list returned by init_usb()</li>
-<li>usbDevice: the list returned by find_usb()</li>
+<li>usbDevice: the list returned by c(find_usb(product,vendor,usbObjects,TRUE), get_command_set(product))</li>
 </ul>
 <p>OUTPUTS:</p>
 <ul>
@@ -516,29 +516,27 @@ December 2019</p>
 <li>a smoothed vector.</li>
 </ul>
 </div>
-<div id="getspectrumpack_in_spectra15-usbobjects-usbdevice" class="section level2">
-<h2>getSpectrum(pack_in_spectra=15, usbObjects, usbDevice)</h2>
+<div id="getspectrumusbobjects-usbdevice" class="section level2">
+<h2>getSpectrumusbObjects, usbDevice)</h2>
 <p>Function to retrieve a spectrum.</p>
 <p>INPUTS:</p>
 <ul>
-<li>pack_in_spectra: number of data packets per spectrum</li>
 <li>usbObjects: the list returned by init_usb()</li>
-<li>usbDevice: the list returned by find_usb()</li>
+<li>usbDevice: the list returned by c(find_usb(product,vendor,usbObjects,TRUE), get_command_set(product))</li>
 </ul>
 <p>OUTPUTS:</p>
 <ul>
 <li>a spectrum as a numeric vector.</li>
 </ul>
 </div>
-<div id="get_n_spectrumpack_in_spectra15-nspectra2-usbobjects-usbdevice" class="section level2">
-<h2>get_N_Spectrum(pack_in_spectra=15, nspectra=2, usbObjects, usbDevice)</h2>
+<div id="get_n_spectrumnspectra2-usbobjects-usbdevice" class="section level2">
+<h2>get_N_Spectrum(nspectra=2, usbObjects, usbDevice)</h2>
 <p>Function to retrieve a spectrum made as an average over a number of spectra.</p>
 <p>INPUTS:</p>
 <ul>
-<li>pack_in_spectra: number of data packets per spectrum</li>
 <li>nspectra: number of spectrum to average over.</li>
 <li>usbObjects: the list returned by init_usb()</li>
-<li>usbDevice: the list returned by find_usb()</li>
+<li>usbDevice: the list returned by c(find_usb(product,vendor,usbObjects,TRUE), get_command_set(product))</li>
 </ul>
 <p>OUTPUTS:</p>
 <ul>
@@ -561,23 +559,21 @@ December 2019</p>
 <p>Connect a USB4000 to a USB port and copy the following lines to the R console.</p>
 <p>source(“R/playWith_usb4java.R”)</p>
 <p>usbObjects &lt;- init_usb()</p>
-<p>product=0x1022</p>
-<p>vendor=0x2457</p>
-<p>usbDevice &lt;- find_usb(product,vendor,usbObjects,TRUE)</p>
-<p>name_serial &lt;- get_OO_name_n_serial(usbObjects, usbDevice$usbDevice)</p>
-<p>lapply(name_serial, print)</p>
-<p>wv &lt;- getWavelengths(usbObjects, usbDevice$usbDevice)</p>
-<p>statut &lt;- queryStatus(usbObjects, usbDevice$usbDevice)</p>
-<p>setIntegrationTime(70,usbObjects,usbDevice$usbDevice)</p>
-<p>(statut &lt;- queryStatus(usbObjects, usbDevice$usbDevice))</p>
-<p>dum &lt;- getSpectrum(pack_in_spectra=15, usbObjects, usbDevice$usbDevice)</p>
-<p>dum &lt;- getSpectrum(pack_in_spectra=15, usbObjects, usbDevice$usbDevice)</p>
-<p>plot(wv, dum[22:3669],type=“l”,col=“red”,lwd=2, ylim=c(0,7000))</p>
-<p>smoothed_sp &lt;- boxcar(dum[22:3669])</p>
-<p>plot(wv, smoothed_sp,type=“l”,col=“red”,lwd=2, ylim=c(0,7000))</p>
-<p>sp &lt;- get_N_Spectrum(pack_in_spectra=15, nspectra=20, usbObjects, usbDevice$usbDevice)</p>
-<p>plot(wv,sp[22:3669],type=“l”,col=“red”,lwd=2, ylim=c(0,40000), main = paste0(name_serial<span class="math inline">\(name, &quot; - Serial number: &quot;, name_serial\)</span>serialno), xlab = “Wavelength [nm]”, ylab = “Intensity [A.U.]”)</p>
+<p>product=0x1022 vendor=0x2457 usbDevice &lt;- find_usb(product,vendor,usbObjects,TRUE) cmdList &lt;- get_command_set(product) usbDevice &lt;- c(usbDevice, cmdList)</p>
+<p>name_serial &lt;- get_OO_name_n_serial(usbObjects, usbDevice) lapply(name_serial, print)</p>
+<p>wv &lt;- getWavelengths(usbObjects, usbDevice)</p>
+<p>statut &lt;- queryStatus(usbObjects, usbDevice)</p>
+<p>(getMaxSatLevel(usbObjects, usbDevice))</p>
+<p>setIntegrationTime(100,usbObjects,usbDevice) (statut &lt;- queryStatus(usbObjects, usbDevice))</p>
+<p>dum &lt;- getSpectrum(usbObjects, usbDevice)</p>
+<p>plot(wv, dum[22:3669],type=“l”,col=“lightgreen”,lwd=5) lines(wv, boxcar(dum[22:3669],10), col=“black”,lwd=1) legend(“topleft”,legend=c(“Raw”,“Boxcar”),lty=c(1,1),col=c(“green”,“black”), inset = c(0.05,0.05))</p>
+<p>windows() { ptm=proc.time() for (k in 1:20){ setIntegrationTime(10+k*5,usbObjects,usbDevice) dum &lt;- getSpectrum(usbObjects, usbDevice) plot(wv, boxcar(dum[22:3669],5),type=“l”,col=“red”,lwd=2,ylim=c(0,50000)) } (proc.time()-ptm) }</p>
+<p>dev.off()</p>
+<p>plot(wv, dum[22:3669],type=“l”,col=“red”,lwd=2)</p>
+<p>setIntegrationTime(100,usbObjects,usbDevice) { ptm=proc.time() sp &lt;- get_N_Spectrum(nspectra=20, usbObjects, usbDevice) (proc.time()-ptm) }</p>
+<p>plot(wv,sp[22:3669],type=“l”,col=“red”,lwd=2, main = paste0(name_serial<span class="math inline">\(name, &quot; - Serial number: &quot;, name_serial\)</span>serialno), xlab = “Wavelength [nm]”, ylab = “Intensity [A.U.]”)</p>
 <p>free_Device(usbObjects)</p>
+<p>rm(list=ls())</p>
 </div>
 <div id="toy-gui" class="section level1">
 <h1>Toy GUI</h1>

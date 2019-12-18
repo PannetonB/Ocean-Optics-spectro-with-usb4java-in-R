@@ -18,16 +18,15 @@ lapply(name_serial, print)
 
 wv <- getWavelengths(usbObjects, usbDevice)
 
-statut <- queryStatus(usbObjects, usbDevice$usbDevice)
+statut <- queryStatus(usbObjects, usbDevice)
 
 (getMaxSatLevel(usbObjects, usbDevice))
-(setMaxSatLevel(usbObjects,usbDevice$usbDevice,32000))
 
-setIntegrationTime(600,usbObjects,usbDevice$usbDevice)
-(statut <- queryStatus(usbObjects, usbDevice$usbDevice))
+setIntegrationTime(100,usbObjects,usbDevice)
+(statut <- queryStatus(usbObjects, usbDevice))
 
 
-dum <- getSpectrum(pack_in_spectra=15, usbObjects, usbDevice$usbDevice)
+dum <- getSpectrum(usbObjects, usbDevice)
 
 plot(wv, dum[22:3669],type="l",col="lightgreen",lwd=5)
 lines(wv, boxcar(dum[22:3669],10), col="black",lwd=1)
@@ -38,8 +37,8 @@ windows()
 {
   ptm=proc.time()
   for (k in 1:20){
-    setIntegrationTime(10+k*5,usbObjects,usbDevice$usbDevice)
-    dum <- getSpectrum(pack_in_spectra=15, usbObjects, usbDevice$usbDevice)
+    setIntegrationTime(10+k*5,usbObjects,usbDevice)
+    dum <- getSpectrum(usbObjects, usbDevice)
     plot(wv, boxcar(dum[22:3669],5),type="l",col="red",lwd=2,ylim=c(0,50000))
   }
   (proc.time()-ptm)
@@ -49,8 +48,13 @@ dev.off()
 
 plot(wv, dum[22:3669],type="l",col="red",lwd=2)
 
+setIntegrationTime(100,usbObjects,usbDevice)
+{
+  ptm=proc.time()
+  sp <- get_N_Spectrum(nspectra=20, usbObjects, usbDevice)
+  (proc.time()-ptm)
+}
 
-sp <- get_N_Spectrum(pack_in_spectra=15, nspectra=20, usbObjects, usbDevice$usbDevice)
 plot(wv,sp[22:3669],type="l",col="red",lwd=2,
      main = paste0(name_serial$name, " - Serial number: ", name_serial$serialno),
      xlab = "Wavelength [nm]",

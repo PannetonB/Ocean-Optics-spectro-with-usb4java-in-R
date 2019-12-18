@@ -197,10 +197,11 @@ do_command <- function(usbObjects, usbDevice, cmd){
     outBuffers <<- list()
     transBuffers <<- list()
     if (n_outputs>0){
-      for (k in 1:n_outputs)
+      for (k in 1:n_outputs){
         outBuffers <<- c(outBuffers,bufutils$allocateByteBuffer(cmd$inLength[[k]]))
-      transBuffers <<- c(transBuffers,bufutils$allocateIntBuffer())
+        transBuffers <<- c(transBuffers,bufutils$allocateIntBuffer())
         libusb$errorName(libusb$bulkTransfer(dhandle,cmd$inEndPoint[[k]],outBuffers[[k]],transBuffers[[k]],tout))
+      }
     }
    
     #Stop communication
@@ -259,8 +260,8 @@ getWavelengths <- function(usbObjects, usbDevice){
 # To get the wavelength vector by reading the wavelength calibration coefficients  
 # INPUTS:
 #   usbObjects: the list returned by init_usb()
-  #   usbDevice:  the list returned by 
-  #               c(find_usb(product,vendor,usbObjects,TRUE), get_command_set(product))
+#   usbDevice:  the list returned by 
+#               c(find_usb(product,vendor,usbObjects,TRUE), get_command_set(product))
 # OUTPUTS:
 #   a vector of wavelengths
 # -----------------------------------
@@ -397,7 +398,8 @@ queryStatus <- function(usbObjects, usbDevice){
 # Query the USB device status. 
   # INPUTS:
   #   usbObjects: the list returned by init_usb()
-  #   usbDevice:  the list returned by find_usb()
+  #   usbDevice:  the list returned by 
+  #               c(find_usb(product,vendor,usbObjects,TRUE), get_command_set(product))
 # OUTPUTS:
 #   a list of 5 elements:
         # 1. nb_pix: number of pixels in spectrum
@@ -409,53 +411,30 @@ queryStatus <- function(usbObjects, usbDevice){
 # B. Panneton - pannetonb2gmail.com
 # December 2019 
 # -----------------------------------    
-  with(usbObjects,{
+  res <- do_command(usbObjects,usbDevice$usbDevice,usbDevice$queryStatus_cmd)
+  transfered <- res$transbuf[[1]]
+  status_buffer <- res$outbuf[[1]] 
   
-    dhandle <- .jnew("org.usb4java.DeviceHandle")
-    
-    #Start communication to USB
-    libusb$errorName(libusb$open(usbDevice,dhandle))
-    libusb$errorName(libusb$setConfiguration(dhandle,1L))
-    libusb$errorName(libusb$claimInterface(dhandle,0L))
-    
-    transfered <- bufutils$allocateIntBuffer()
-    cmd_buffer <- bufutils$allocateByteBuffer(1L)
-    cmd_buffer$put(.jarray(as.raw(0xFE)))
-    status_buffer <- bufutils$allocateByteBuffer(16L)
-    
-    outendp <- .jbyte(1)
-    inendp <- .jbyte(0x81)
-    tout <- .jlong(1000L)
-    
-    libusb$errorName(libusb$bulkTransfer(dhandle,outendp,cmd_buffer,transfered,tout))
-    libusb$errorName(libusb$bulkTransfer(dhandle,inendp,status_buffer,transfered,tout))
-    
-    #Stop communication
-    libusb$errorName(libusb$releaseInterface(dhandle,0L))
-    libusb$close(dhandle)
-    
-    nb_pix <<- 256*jbyte_2_uint(status_buffer$get(1L)) + jbyte_2_uint(status_buffer$get(0L))
-    int_time <<- jbyte_2_uint(status_buffer$get(2L)) +
-      jbyte_2_uint(status_buffer$get(3L))*256 +
-      jbyte_2_uint(status_buffer$get(4L))*256*256 +
-      jbyte_2_uint(status_buffer$get(5L))*256^3
-    int_time <<- round(int_time/1000)  #msec
-    pack_in_spectra <<- jbyte_2_uint(status_buffer$get(9L))
-    pack_count <<- jbyte_2_uint(status_buffer$get(11L))
-    usb_speed <<- jbyte_2_uint(status_buffer$get(14L))
-    if (usb_speed==0){
-      usb_speed <<- "full"
-    }else
-    {
-      usb_speed <<- "high"
-    }
-  })
-  
+  nb_pix <<- 256*jbyte_2_uint(status_buffer$get(1L)) + jbyte_2_uint(status_buffer$get(0L))
+  int_time <<- jbyte_2_uint(status_buffer$get(2L)) +
+    jbyte_2_uint(status_buffer$get(3L))*256 +
+    jbyte_2_uint(status_buffer$get(4L))*256*256 +
+    jbyte_2_uint(status_buffer$get(5L))*256^3
+  int_time <<- round(int_time/1000)  #msec
+  pack_in_spectra <<- jbyte_2_uint(status_buffer$get(9L))
+  pack_count <<- jbyte_2_uint(status_buffer$get(11L))
+  usb_speed <<- jbyte_2_uint(status_buffer$get(14L))
+  if (usb_speed==0){
+    usb_speed <<- "full"
+  }else
+  {
+    usb_speed <<- "high"
+  }
   return(list(nb_pix=nb_pix,
-              int_time=int_time,
-              pack_in_spectra=pack_in_spectra,
-              pack_count=pack_count,
-              usb_speed=usb_speed))
+            int_time=int_time,
+            pack_in_spectra=pack_in_spectra,
+            pack_count=pack_count,
+            usb_speed=usb_speed))
 }
 
 
@@ -466,47 +445,23 @@ setIntegrationTime <- function(temps,usbObjects, usbDevice){
 # INPUTS:
 #   temps: integration time in msec.  
 #   usbObjects: the list returned by init_usb()
-#   usbDevice:  the list returned by find_usb()
+#   usbDevice:  the list returned by 
+#               c(find_usb(product,vendor,usbObjects,TRUE), get_command_set(product))
 # OUTPUTS: 
 #     none
 # -----------------------------------
 # B. Panneton - pannetonb2gmail.com
 # December 2019 
 # -----------------------------------   
+  dum <- .jevalArray(usbDevice$setIntegrationTime_cmd$cmd)
+  letemps = round(temps)*1000
+  temps_byte <- bytes(as.integer(letemps))
+  temps_byte <- unlist(strsplit(temps_byte," "))
+  temps_byte <- paste0("0x",temps_byte)
+  temps_hword <- rev(as.raw(temps_byte))
+  usbDevice$setIntegrationTime_cmd$cmd <- .jarray(.jbyte(c(dum[1],temps_hword)))
   
-  with(usbObjects,{
-  
-    dhandle <- .jnew("org.usb4java.DeviceHandle")
-    
-    letemps = round(temps)*1000
-    temps_byte <- bytes(as.integer(letemps))
-    temps_byte <- unlist(strsplit(temps_byte," "))
-    temps_byte <- paste0("0x",temps_byte)
-    temps_hword <- rev(as.raw(temps_byte))
-    
-    cmd_intTime <- .jarray(.jbyte(c(0x02,temps_hword)))
-    
-    
-    #Start communication to USB
-    libusb$errorName(libusb$open(usbDevice,dhandle))
-    libusb$errorName(libusb$setConfiguration(dhandle,1L))
-    libusb$errorName(libusb$claimInterface(dhandle,0L))
-    
-    transfered <- bufutils$allocateIntBuffer()
-    cmd_buffer <- bufutils$allocateByteBuffer(5L)
-    cmd_buffer$put(cmd_intTime)
-    
-    outendp <- .jbyte(1)
-    inendp <- .jbyte(0x81)
-    tout <- .jlong(1000L)
-    
-    libusb$errorName(libusb$bulkTransfer(dhandle,outendp,cmd_buffer,transfered,tout))
-    
-    
-    #Stop communication
-    libusb$errorName(libusb$releaseInterface(dhandle,0L))
-    libusb$close(dhandle)
-  })
+  res <- do_command(usbObjects,usbDevice$usbDevice, usbDevice$setIntegrationTime_cmd)
   
 }
 
@@ -529,13 +484,13 @@ boxcar <- function(x, n = 5){
 }
 
 # -----------------------------------
-getSpectrum <- function(pack_in_spectra=15, usbObjects, usbDevice){
+getSpectrum <- function(usbObjects, usbDevice){
 # -----------------------------------
 # Function to retrieve a spectrum. 
-# INPUTS:
-#   pack_in_spectra: number of data packets per spectrum  
+# INPUTS:  
 #   usbObjects: the list returned by init_usb()
-#   usbDevice:  the list returned by find_usb()
+#   usbDevice:  the list returned by 
+#               c(find_usb(product,vendor,usbObjects,TRUE), get_command_set(product))
 # OUTPUTS: 
 #     a spectrum as a numeric vector.
 # -----------------------------------
@@ -543,117 +498,49 @@ getSpectrum <- function(pack_in_spectra=15, usbObjects, usbDevice){
 # December 2019 
 # -----------------------------------     
  
-  with(usbObjects,{
+  res <- do_command(usbObjects,usbDevice$usbDevice,usbDevice$getSpectrum_cmd)
   
-    dhandle <- .jnew("org.usb4java.DeviceHandle")
-     
-    #Start communication to USB
-    libusb$errorName(libusb$open(usbDevice,dhandle))
-    libusb$errorName(libusb$setConfiguration(dhandle,1L))
-    libusb$errorName(libusb$claimInterface(dhandle,0L))
-    
-    transfered <- bufutils$allocateIntBuffer()
-    cmd_buffer <- bufutils$allocateByteBuffer(1L)
-    cmd_buffer$put(.jarray(as.raw(0x09)))
-    data_buffer_1 <- bufutils$allocateByteBuffer(4L*512L)
-    data_buffer_2 <- bufutils$allocateByteBuffer(11L*512L)
-    end_buffer <- bufutils$allocateByteBuffer(1L)
-    
-    outendp <- .jbyte(1)
-    EP6in <- .jbyte(0x86)
-    EP2in <- .jbyte(0x82)
-    tout <- .jlong(5000L)
-    
-    libusb$errorName(libusb$bulkTransfer(dhandle,outendp,cmd_buffer,transfered,tout))
-    
-    
-   
-    libusb$errorName(libusb$bulkTransfer(dhandle,EP6in,data_buffer_1,transfered,tout))
-    libusb$errorName(libusb$bulkTransfer(dhandle,EP2in,data_buffer_2,transfered,tout))
-    libusb$errorName(libusb$bulkTransfer(dhandle,EP2in,end_buffer,transfered,tout))
-    dum1 <- .jarray(raw(2048))
-    data_buffer_1$get(dum1,0L,(4L*512L))
-    dum2 <- .jarray(raw(11*512))
-    data_buffer_2$get(dum2,0L,(11L*512L))
-    
-    dum <- c(.jevalArray(dum1),.jevalArray(dum2))
-      
-   
-    #Stop communication
-    libusb$errorName(libusb$releaseInterface(dhandle,0L))
-    libusb$close(dhandle)
-    sp <<- getLittleEndianIntegerFromByteArray(dum)
-  })
+  
+  
+  dum1 <- .jarray(raw(usbDevice$getSpectrum_cmd$inLength[[1]]))
+  res$outbuf[[1]]$get(dum1,0L,(usbDevice$getSpectrum_cmd$inLength[[1]]))
+  dum2 <- .jarray(raw(usbDevice$getSpectrum_cmd$inLength[[2]]))
+  res$outbuf[[2]]$get(dum2,0L,(usbDevice$getSpectrum_cmd$inLength[[2]]))
+  
+  dum <- c(.jevalArray(dum1),.jevalArray(dum2))
+  
+  sp <- getLittleEndianIntegerFromByteArray(dum)
+  
   return(sp)
 }
+  
 
 # -----------------------------------
-get_N_Spectrum <- function(pack_in_spectra=15, nspectra=2, usbObjects, usbDevice){
+get_N_Spectrum <- function(nspectra=2, usbObjects, usbDevice){
 # -----------------------------------
 # Function to retrieve a spectrum made as an average over a number of spectra. 
-# INPUTS:
-#   pack_in_spectra: number of data packets per spectrum  
+# INPUTS:  
 #   nspectra: number of spectrum to average over.  
 #   usbObjects: the list returned by init_usb()
-#   usbDevice:  the list returned by find_usb()
+#   usbDevice:  the list returned by 
+#               c(find_usb(product,vendor,usbObjects,TRUE), get_command_set(product))
 # OUTPUTS: 
 #     a spectrum as a numeric vector.
 # -----------------------------------
 # B. Panneton - pannetonb2gmail.com
 # December 2019 
 # -----------------------------------     
-  
-  with(usbObjects,{
-  
-    dhandle <- .jnew("org.usb4java.DeviceHandle")
-    
-    dum <- vector(mode="list",length=nspectra)
-    
-    #Start communication to USB
-    libusb$errorName(libusb$open(usbDevice,dhandle))
-    libusb$errorName(libusb$setConfiguration(dhandle,1L))
-    libusb$errorName(libusb$claimInterface(dhandle,0L))
-    
-    transfered <- bufutils$allocateIntBuffer()
-    cmd_buffer <- bufutils$allocateByteBuffer(1L)
-    cmd_buffer$put(.jarray(as.raw(0x09)))
-    data_buffer_1 <- bufutils$allocateByteBuffer(4L*512L)
-    data_buffer_2 <- bufutils$allocateByteBuffer(11L*512L)
-    end_buffer <- bufutils$allocateByteBuffer(1L)
-    
-    outendp <- .jbyte(1)
-    EP6in <- .jbyte(0x86)
-    EP2in <- .jbyte(0x82)
-    tout <- .jlong(5000L)
-    
-    
-    dum1 <- .jarray(raw(2048))
-    dum2 <- .jarray(raw(11*512))
-    
-    for (k in 1:nspectra){
-      libusb$errorName(libusb$bulkTransfer(dhandle,outendp,cmd_buffer,transfered,tout))
-    
-      libusb$errorName(libusb$bulkTransfer(dhandle,EP6in,data_buffer_1,transfered,tout))
-      libusb$errorName(libusb$bulkTransfer(dhandle,EP2in,data_buffer_2,transfered,tout))
-      libusb$errorName(libusb$bulkTransfer(dhandle,EP2in,end_buffer,transfered,tout))
-      
-      data_buffer_1$get(dum1,0L,(4L*512L))
-      data_buffer_2$get(dum2,0L,(11L*512L))
-      
-      data_buffer_1$rewind()
-      data_buffer_2$rewind()
-      end_buffer$rewind()
-    
-      dum[[k]] <- c(.jevalArray(dum1),.jevalArray(dum2))
-    }
-    
-    #Stop communication
-    libusb$errorName(libusb$releaseInterface(dhandle,0L))
-    libusb$close(dhandle)
-    sp <<- lapply(dum,getLittleEndianIntegerFromByteArray)
-    sp <<- colMeans(matrix(unlist(sp),nrow=nspectra,byrow=T))
-  })
-  
+  dum <- vector(mode="list",length=nspectra)
+  for (k in 1:nspectra){
+    res <- do_command(usbObjects,usbDevice$usbDevice,usbDevice$getSpectrum_cmd)
+    dum1 <- .jarray(raw(usbDevice$getSpectrum_cmd$inLength[[1]]))
+    res$outbuf[[1]]$get(dum1,0L,(usbDevice$getSpectrum_cmd$inLength[[1]]))
+    dum2 <- .jarray(raw(usbDevice$getSpectrum_cmd$inLength[[2]]))
+    res$outbuf[[2]]$get(dum2,0L,(usbDevice$getSpectrum_cmd$inLength[[2]]))
+    dum[[k]] <- c(.jevalArray(dum1),.jevalArray(dum2))
+  }
+  sp <- lapply(dum,getLittleEndianIntegerFromByteArray)
+  sp <- colMeans(matrix(unlist(sp),nrow=nspectra,byrow=T))
   return(sp)
 }
 

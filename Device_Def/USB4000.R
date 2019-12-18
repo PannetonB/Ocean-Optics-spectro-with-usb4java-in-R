@@ -39,7 +39,7 @@ maxSatLevel_cmd <- list(cmd = .jarray(as.raw(c(0x6b,0x80))),
                     inLength = list(3L))
 
 
-queryStatus_cmd <- list(.jarray(as.raw(0xFE)),
+queryStatus_cmd <- list(cmd =.jarray(as.raw(0xFE)),
                         outEndPoint = .jbyte(1),
                         inEndPoint = list(.jbyte(0x81)),
                         inLength = list(16L))
