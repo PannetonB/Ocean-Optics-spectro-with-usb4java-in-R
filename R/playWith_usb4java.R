@@ -137,8 +137,8 @@ get_command_set <- function(product){
   # -----------------------------------   
   
   products = c(0x1022, # USB4000
-               0x1022, # Flame S
-               0x101e  # Flame T
+               0x1022, # Flame T
+               0x101e  # Flame S
   )
   
   def_files = c("USB4000.R")
