@@ -35,7 +35,7 @@ wv_cal_3_cmd <- list (cmd = .jarray(as.raw(c(0x05,0x04))),
                       inEndPoint = list(.jbyte(0x81)),
                       inLength = list(20L))
 
-maxSatLevel_cmd <- list(cmd = .jarray(as.raw(c(0x6b,0x68♠))),
+maxSatLevel_cmd <- list(cmd = .jarray(as.raw(c(0x6b,0x68))),
                     outEndPoint = .jbyte(1),
                     inEndPoint = list(.jbyte(0x81)),
                     inLength = list(3L))

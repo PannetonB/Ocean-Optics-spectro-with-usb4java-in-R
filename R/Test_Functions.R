@@ -4,7 +4,7 @@ source("R/playWith_usb4java.R")
 
 usbObjects <- init_usb()
 
-product=0x1022
+product=0x101e
 vendor=0x2457
 usbDevice <- find_usb(product,vendor,usbObjects,TRUE)
 
